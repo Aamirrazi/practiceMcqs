@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QA Practice Hub</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Code:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- ── NAVBAR ─────────────────────────────────────────────── -->
+    <header class="navbar" role="banner">
+      <div class="navbar-inner">
+        <div class="nav-brand">QA<span>·</span>PRACTICE</div>
+
+        <!-- Theme toggle -->
+        <button
+          class="theme-pill"
+          id="themeToggle"
+          role="switch"
+          aria-checked="false"
+          aria-label="Toggle dark mode"
+        >
+          <span class="t-icon t-sun" aria-hidden="true">☀️</span>
+          <div class="toggle-track" aria-hidden="true">
+            <div class="toggle-thumb"></div>
+          </div>
+          <span class="t-icon t-moon" aria-hidden="true">🌙</span>
+          <span class="t-label" id="themeLabel">Light</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ══════════════════════════════════════════════════════════
+         VIEW: DASHBOARD
+         ══════════════════════════════════════════════════════ -->
+    <main data-view="dashboard" class="app-shell" aria-label="Test Dashboard">
+      <!-- Hero -->
+      <section class="dashboard-hero" aria-labelledby="heroTitle">
+        <div class="hero-eyebrow">
+          <span class="eyebrow-pulse" aria-hidden="true"></span>
+          Interactive Assessment Hub
+        </div>
+        <!-- <h1 class="hero-title" id="heroTitle">Practice<br /><em>Exams</em></h1>
+        <p class="hero-sub">
+          Scenario-based questions covering Playwright automation and JMeter
+          performance testing. Select a module below to begin.
+        </p> -->
+      </section>
+
+      <!-- Dynamically populated test cards -->
+      <div id="dashboardGrid" role="list" aria-label="Available tests"></div>
+    </main>
+
+    <!-- ══════════════════════════════════════════════════════════
+         VIEW: EXAM
+         ══════════════════════════════════════════════════════ -->
+    <div data-view="exam" hidden aria-hidden="true">
+      <!-- Sticky exam header -->
+      <div class="exam-header app-shell">
+        <div class="exam-header-top">
+          <button
+            class="back-btn back-to-dashboard"
+            aria-label="Return to dashboard"
+          >
+            ← Dashboard
+          </button>
+          <div>
+            <h1 class="exam-title" id="examTitle">Loading…</h1>
+            <p class="exam-meta" id="examMeta"></p>
+          </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-row" aria-label="Exam progress">
+          <div
+            class="progress-bar-wrap"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          >
+            <div class="progress-bar-fill" id="progressBar"></div>
+          </div>
+          <span
+            class="progress-counter"
+            id="progressCounter"
+            aria-live="polite"
+          >
+            Answered 0 of 0
+          </span>
+        </div>
+      </div>
+
+      <!-- Question list -->
+      <div class="app-shell">
+        <div id="examContainer" role="list" aria-label="Exam questions"></div>
+
+        <!-- Submit footer -->
+        <footer class="exam-footer" aria-label="Exam actions">
+          <p class="exam-footer-info">
+            Review all questions before submitting. Answers cannot be changed
+            after submission.
+          </p>
+          <button
+            class="submit-btn"
+            id="submitBtn"
+            type="button"
+            disabled
+            aria-describedby="progressCounter"
+          >
+            Submit Exam →
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         VIEW: RESULTS
+         ══════════════════════════════════════════════════════ -->
+    <div data-view="results" hidden aria-hidden="true">
+      <div class="app-shell">
+        <!-- Score + summary (populated by JS) -->
+        <section class="results-header-section" aria-label="Your results">
+          <div class="results-actions">
+            <button
+              class="back-btn back-to-dashboard"
+              aria-label="Return to dashboard"
+            >
+              ← Dashboard
+            </button>
+          </div>
+          <div id="resultsHeader"></div>
+        </section>
+
+        <!-- Full question review -->
+        <section aria-label="Question review">
+          <h2 class="review-section-title">Question Review</h2>
+          <div id="reviewList" role="list" aria-label="Reviewed answers"></div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SUBMIT CONFIRMATION MODAL
+         ══════════════════════════════════════════════════════ -->
+    <div
+      class="modal-overlay"
+      id="submitModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+      aria-describedby="modalMessage"
+      hidden
+      aria-hidden="true"
+    >
+      <div class="modal-box">
+        <h2 class="modal-title" id="modalTitle">Submit Exam?</h2>
+        <p class="modal-message" id="modalMessage">
+          Are you sure you want to submit your answers?
+        </p>
+        <div class="modal-actions">
+          <button class="btn-ghost" id="modalCancelBtn" type="button">
+            Keep Reviewing
+          </button>
+          <button class="btn-primary" id="modalConfirmBtn" type="button">
+            Submit Now
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         DATA MODULES
+         Register new test modules here by:
+         1. Adding a <script> tag for your data file.
+         2. Pushing the exported variable into window.APP_MODULES.
+
+         Example:
+           <script src="data/my-new-test.js"></script>
+           (then add  MyNewTest  to the push() call below)
+         ══════════════════════════════════════════════════════ -->
+
+    <!-- <script src="data/playwright-medium.js"></script>
+    <script src="data/playwright-hard.js"></script>
+    <script src="data/playwright2medium.js"></script>
+    <script src="data/playwright2hard.js"></script> -->
+    <script src="data/performance-testing.js"></script>
+    <script src="data/fundamental/htmlfundamental.js"></script>
+    <script src="data/fundamental/dombasics.js"></script>
+    <script src="data/fundamental/set5.js"></script>
+    <!-- <script src="data/playwright/playwright-advanced.js"></script> -->
+    <script src="data/playwright/playwright-hard.js"></script>
+    <script src="data/playwright/playwright-medium.js"></script>
+    <script src="data/playwright/playwright2hard.js"></script>
+    <script src="data/playwright/playwright2medium.js"></script>
+    <!-- <script src="data/sample-test.js"></script> -->
+
+    <!-- Module registry — order controls Dashboard order -->
+    <script>
+      window.APP_MODULES = [
+        WebDevSet1,
+        WebDevSet2,
+        WebDevSet3,
+        WebDevSet4,
+        WebDevSet5,
+        PlaywrightMediumTest,
+        PlaywrightHardTest,
+        PlaywrightPart2Medium,
+        PlaywrightPart2Hard,
+        // PlaywrightAdvanced,
+        PerformanceTesting,
+        // SampleTest,   ← uncomment when you add the file above
+      ];
+    </script>
+
+    <!-- Core app logic (must come AFTER modules are registered) -->
+    <script src="app.js"></script>
+  </body>
+</html>
