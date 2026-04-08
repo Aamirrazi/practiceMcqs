@@ -3,7 +3,7 @@ const WebDevSet4 = {
     id: "dom-basics",
     testTitle: "DOM Basics",
     topic: "javascript",
-    topicLabel: "Web Dev: Part 4",
+    topicLabel: "DOM Fundamentals",
     difficulty: "Beginner",
     questionCount: 25,
     estimatedMinutes: 30,
