@@ -1,0 +1,918 @@
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  .wrap {
+    padding: 1rem 0;
+  }
+  .day-tag {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    background: var(--color-background-secondary);
+    padding: 4px 10px;
+    border-radius: var(--border-radius-md);
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .tab {
+    padding: 8px 16px;
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    background: var(--color-background-primary);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .tab.active {
+    background: var(--color-background-info);
+    color: var(--color-text-info);
+    border-color: var(--color-border-info);
+  }
+  .tab:hover:not(.active) {
+    background: var(--color-background-secondary);
+  }
+  .prog-bar {
+    height: 4px;
+    background: var(--color-background-secondary);
+    border-radius: 2px;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+  }
+  .prog-fill {
+    height: 100%;
+    background: var(--color-text-info);
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+  .qheader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .qnum {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+  .sbadge {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-info);
+    background: var(--color-background-info);
+    padding: 4px 10px;
+    border-radius: var(--border-radius-md);
+  }
+  .lvlbadge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: var(--border-radius-md);
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  .b1 {
+    background: var(--color-background-success);
+    color: var(--color-text-success);
+  }
+  .b2 {
+    background: var(--color-background-warning);
+    color: var(--color-text-warning);
+  }
+  .b3 {
+    background: var(--color-background-danger);
+    color: var(--color-text-danger);
+  }
+  .qcard {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .qtext {
+    font-size: 14.5px;
+    color: var(--color-text-primary);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+  }
+  .codeblock {
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    padding: 12px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-text-primary);
+    white-space: pre;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    line-height: 1.65;
+  }
+  .opts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+  .opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 13px;
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    background: var(--color-background-primary);
+    transition:
+      background 0.12s,
+      border-color 0.12s;
+    text-align: left;
+    width: 100%;
+  }
+  .opt:hover:not(.locked) {
+    background: var(--color-background-secondary);
+    border-color: var(--color-border-primary);
+  }
+  .opt.correct {
+    background: var(--color-background-success) !important;
+    border-color: var(--color-border-success) !important;
+  }
+  .opt.wrong {
+    background: var(--color-background-danger) !important;
+    border-color: var(--color-border-danger) !important;
+  }
+  .opt.locked {
+    cursor: default;
+  }
+  .okey {
+    font-size: 12px;
+    font-weight: 500;
+    min-width: 18px;
+    color: var(--color-text-secondary);
+    padding-top: 2px;
+    flex-shrink: 0;
+  }
+  .opt.correct .okey {
+    color: var(--color-text-success);
+  }
+  .opt.wrong .okey {
+    color: var(--color-text-danger);
+  }
+  .otext {
+    font-size: 13px;
+    color: var(--color-text-primary);
+    line-height: 1.55;
+    font-family: var(--font-mono);
+  }
+  .explain {
+    padding: 11px 13px;
+    background: var(--color-background-secondary);
+    border-left: 3px solid var(--color-border-info);
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+    font-family: var(--font-sans);
+  }
+  .navrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .btn {
+    padding: 8px 20px;
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    background: var(--color-background-primary);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .btn:hover:not(:disabled) {
+    background: var(--color-background-secondary);
+  }
+  .btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+  .btnp {
+    background: var(--color-background-info) !important;
+    color: var(--color-text-info) !important;
+    border-color: var(--color-border-info) !important;
+  }
+  .result {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    text-align: center;
+  }
+  .rscore {
+    font-size: 44px;
+    font-weight: 500;
+    color: var(--color-text-info);
+    margin: 0.5rem 0;
+  }
+  .stats {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 1.25rem 0;
+    flex-wrap: wrap;
+  }
+  .stat {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 12px 20px;
+  }
+  .snum {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+  .slbl {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+  }
+</style>
+
+<div class="wrap">
+  <div class="day-tag">
+    📅 Daily Quiz — Day 4 &nbsp;|&nbsp; ⚠️ Expert Level — Read Every Option
+    Twice
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchLevel(0)">
+      Level 1 — Code Analysis
+    </button>
+    <button class="tab" onclick="switchLevel(1)">
+      Level 2 — Deep Concepts
+    </button>
+    <button class="tab" onclick="switchLevel(2)">
+      Level 3 — Scenario Traps
+    </button>
+  </div>
+  <div class="prog-bar"><div class="prog-fill" id="prog"></div></div>
+  <div class="qheader">
+    <span class="qnum" id="qnum">Question 1 of 10</span>
+    <span class="sbadge" id="sbadge">Score: 0</span>
+  </div>
+  <div id="area"></div>
+</div>
+
+<script>
+  const Q = [
+    [
+      {
+        q: "What is the OUTPUT of this code when the page has exactly 3 list items with texts: 'Apple', 'Banana', 'Cherry'?",
+        code: `const items = page.getByRole('listitem');
+const count = await items.count();
+const texts = await items.allTextContents();
+console.log(count, texts[count - 1]);`,
+        opts: [
+          "3  'Cherry'",
+          "3  'Banana'",
+          "3  undefined",
+          "It throws — allTextContents() cannot be called after count()",
+        ],
+        ans: 0,
+        exp: "count() returns 3. texts is ['Apple','Banana','Cherry']. texts[count-1] = texts[2] = 'Cherry'. Both count() and allTextContents() are valid independent calls on the same locator — they don't interfere with each other.",
+      },
+
+      {
+        q: "This code aims to select the 2nd radio button in a group. What is actually selected?",
+        code: `await page.locator('input[type="radio"]').nth(1).check();`,
+        opts: [
+          "The 2nd radio button — nth(1) is index 1 which is the 2nd element",
+          "The 1st radio button — nth(1) is 1-based so it maps to the first element",
+          "The 3rd radio button — nth counts from the end when index is odd",
+          "It throws — check() is not valid on radio buttons, only checkboxes",
+        ],
+        ans: 0,
+        exp: "nth() in Playwright is 0-indexed. nth(0) = 1st, nth(1) = 2nd, nth(2) = 3rd. So nth(1) correctly selects the 2nd radio button. check() works on both checkboxes AND radio buttons. The confusion often comes from XPath which is 1-indexed.",
+      },
+
+      {
+        q: "Which of these locator chains will FAIL at runtime even though it looks valid?",
+        code: null,
+        opts: [
+          `page.getByRole('row',{name:'John'}).getByRole('button',{name:'Edit'})`,
+          `page.locator('table').locator('tr').filter({hasText:'John'}).locator('button')`,
+          `page.getByRole('button',{name:'Edit'}).locator('..').getByRole('row')`,
+          `page.locator('tr:has-text("John") button:has-text("Edit")')`,
+        ],
+        ans: 2,
+        exp: "Option C tries to use '..' (parent selector) inside .locator() — Playwright does NOT support CSS parent traversal via '..'. You cannot go UP the DOM using locator(). To scope a search, always go DOWN from a parent. Options A, B, D are all valid approaches.",
+      },
+
+      {
+        q: "What does this assertion actually verify — and what does it NOT verify?",
+        code: `await expect(page.getByTestId('price')).toHaveText('$29.99');`,
+        opts: [
+          "Verifies the element's value attribute equals '$29.99' — does NOT check visible text",
+          "Verifies the full visible text content equals '$29.99' — does NOT check partial matches",
+          "Verifies the innerHTML contains '$29.99' including child tags",
+          "Verifies the placeholder attribute equals '$29.99' — not the displayed value",
+        ],
+        ans: 1,
+        exp: "toHaveText() checks the FULL visible text content of the element and auto-retries. By default it does an exact match on normalized text. It does NOT check value attributes (that's toHaveValue), placeholder, or innerHTML structure. If the element shows '$29.99 USD', this assertion would FAIL.",
+      },
+
+      {
+        q: "What happens when this code runs and the button becomes visible after 8 seconds?",
+        code: `// playwright.config.ts: use: { actionTimeout: 5000 }
+await page.getByRole('button', { name: 'Submit' }).click({ timeout: 12000 });`,
+        opts: [
+          "Throws after 5 seconds — config actionTimeout always takes precedence over inline timeout",
+          "Throws after 12 seconds — inline timeout overrides the global actionTimeout for this action",
+          "Throws after 8.5 seconds — Playwright averages the two timeout values",
+          "Clicks successfully after 8 seconds — Playwright always waits as long as needed",
+        ],
+        ans: 1,
+        exp: "Per-action timeout { timeout: 12000 } overrides the global actionTimeout for that specific call. The config's actionTimeout is just the default when no inline timeout is provided. Here, the button appears at 8s which is within the 12s window, so it clicks successfully.",
+      },
+
+      {
+        q: "A locator is defined as shown. On which line does Playwright actually query the DOM?",
+        code: `const btn = page.getByRole('button', { name: 'Login' }); // Line 1
+const isVis = await btn.isVisible();                         // Line 2
+await btn.click();                                           // Line 3`,
+        opts: [
+          "Line 1 — getByRole() immediately queries the DOM to find the element",
+          "Line 2 — isVisible() triggers the first DOM query",
+          "Lines 2 and 3 independently — each action queries the DOM fresh at the time of call",
+          "Line 3 only — Playwright batches all queries and executes at the first action",
+        ],
+        ans: 2,
+        exp: "Playwright Locators are LAZY — Line 1 just creates a descriptor, no DOM query happens. Every time an action or assertion is called (isVisible on Line 2, click on Line 3), Playwright queries the DOM freshly at that moment. This is why locators are resilient to DOM re-renders between calls.",
+      },
+
+      {
+        q: "What is the exact difference between these two assertions?",
+        code: `// Assertion A
+await expect(page.getByRole('heading')).toHaveText('Welcome');
+// Assertion B
+await expect(page.getByRole('heading')).toContainText('Welcome');`,
+        opts: [
+          "They are identical — toHaveText and toContainText both do partial matching",
+          "A fails if heading text is 'Welcome, John!' — B passes because it checks for substring",
+          "A passes for any heading containing 'Welcome' — B requires an exact full-string match",
+          "A checks the value attribute — B checks the visible text content",
+        ],
+        ans: 1,
+        exp: "toHaveText() matches the FULL normalized text — 'Welcome, John!' would FAIL option A. toContainText() checks for a SUBSTRING — 'Welcome, John!' would PASS option B. This is a critical distinction when asserting on dynamic text that includes usernames, dates, or counts.",
+      },
+
+      {
+        q: "This test uses a custom fixture. What will the console print for a PASSING test?",
+        code: `export const test = base.extend({
+  myPage: async ({ page }, use) => {
+    console.log('A');
+    await page.goto('/home');
+    await use(page);
+    console.log('B');
+  }
+});
+test('check title', async ({ myPage }) => {
+  console.log('C');
+  await expect(myPage).toHaveTitle(/Home/);
+});`,
+        opts: [
+          "A → C → B",
+          "C → A → B",
+          "A → B → C",
+          "A → C  (B never runs for passing tests)",
+        ],
+        ans: 0,
+        exp: "Custom fixture execution: setup code runs first (A), then use() yields to the test body (C), then after the test completes the code after use() runs as teardown (B). This is guaranteed regardless of pass/fail status — teardown ALWAYS runs after use(), which is why it's safe for cleanup.",
+      },
+
+      {
+        q: "Which of these will correctly read ALL option values from a native <select> dropdown?",
+        code: `// HTML: <select id='lang'><option value='js'>JS</option><option value='ts'>TS</option></select>`,
+        opts: [
+          `await page.locator('#lang option').allTextContents()`,
+          `await page.getByRole('option').evaluateAll(els => els.map(e => e.value))`,
+          `await page.locator('select#lang').inputValue()`,
+          `await page.locator('#lang').selectOption()`,
+        ],
+        ans: 1,
+        exp: "evaluateAll() runs JS in the browser on ALL matched elements — perfect for extracting properties like .value from every option. Option A gets text contents (not values). Option C gets only the currently SELECTED value (single string). Option D with empty selectOption() throws an error.",
+      },
+
+      {
+        q: "What is the ACTUAL behavior of this code during a test retry?",
+        code: `test('flaky test', async ({ page }) => {
+  if (test.info().retry > 0) {
+    await page.context().clearCookies();
+  }
+  await page.goto('/dashboard');
+});`,
+        opts: [
+          "clearCookies() runs on the 1st attempt and every retry",
+          "clearCookies() runs only from the 2nd attempt onward — retry 0 means first run",
+          "test.info().retry is always 0 — retries reset the counter each time",
+          "This throws — clearCookies() is not a valid method on BrowserContext",
+        ],
+        ans: 1,
+        exp: "test.info().retry starts at 0 on the FIRST run. On the 1st retry it becomes 1, 2nd retry becomes 2, etc. So retry > 0 is false on the first attempt and true only on actual retries. This pattern lets you do extra cleanup (like clearing cookies) only when a test is being retried — not on the first run.",
+      },
+    ],
+    [
+      {
+        q: "A test runs across 3 browser projects (chromium, firefox, webkit) with workers:4 and fullyParallel:true. How many total worker processes can be running simultaneously at peak?",
+        code: null,
+        opts: [
+          "3 — one per browser project regardless of workers setting",
+          "4 — workers:4 is the hard ceiling across all projects combined",
+          "12 — 4 workers per project × 3 projects",
+          "Up to 4 — workers caps the concurrency, tests from all 3 projects compete for these 4 slots",
+        ],
+        ans: 3,
+        exp: "workers:4 sets the GLOBAL maximum concurrent worker processes. Tests from all projects (chromium, firefox, webkit) compete for these 4 slots. At peak you have 4 tests running simultaneously — they could be a mix of any browsers. Workers is not multiplied per project.",
+      },
+
+      {
+        q: "What is WRONG with this beforeAll that tries to share an authenticated page across tests?",
+        code: `test.describe('Suite', () => {
+  let page: Page;
+  test.beforeAll(async ({ browser }) => {
+    const ctx = await browser.newContext();
+    page = await ctx.newPage();
+    await page.goto('/login');
+    await page.fill('#email','admin@x.com');
+    await page.click('#submit');
+  });
+  test('T1', async () => { await page.goto('/users'); });
+  test('T2', async () => { await page.goto('/reports'); });
+});`,
+        opts: [
+          "browser fixture is not available in beforeAll — use page fixture instead",
+          "The context created in beforeAll is never closed — it leaks between test runs",
+          "page.fill() requires the element to be awaited before calling fill()",
+          "Tests T1 and T2 must use the { page } fixture parameter, not the outer page variable",
+        ],
+        ans: 1,
+        exp: "The BrowserContext created manually in beforeAll is NEVER closed — there's no afterAll calling ctx.close(). This leaks memory and can cause flaky behavior in long test runs. Always pair new context creation with explicit cleanup in afterAll. The outer page variable pattern itself is valid when used with browser fixture.",
+      },
+
+      {
+        q: "Three locators target the same button. In which ORDER does Playwright recommend using them (most preferred first)?",
+        code: `// Button HTML: <button data-testid="pay-btn" aria-label="Pay Now">Pay Now</button>`,
+        opts: [
+          "getByTestId → getByRole → getByText",
+          "getByRole → getByText → getByTestId",
+          "getByRole → getByTestId → getByText",
+          "getByText → getByRole → getByTestId",
+        ],
+        ans: 2,
+        exp: "Playwright's official priority: getByRole (semantic/accessible) > getByLabel > getByPlaceholder > getByText > getByTestId > CSS > XPath. getByRole is FIRST because it validates accessibility. getByTestId is stable but lower priority than semantic selectors. getByText is fragile when text changes.",
+      },
+
+      {
+        q: "What is the subtle execution order issue in this code?",
+        code: `test('download and verify', async ({ page }) => {
+  await page.goto('/reports');
+  const download = await page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export' }).click();
+  await download.saveAs('./output/report.csv');
+});`,
+        opts: [
+          "saveAs() must be called before waitForEvent to pre-configure the save path",
+          "waitForEvent('download') is awaited BEFORE the click — it will wait forever since nothing triggered the download yet",
+          "page.waitForEvent returns a Promise — it should not be awaited directly",
+          "download.saveAs() must specify contentType like in testInfo.attach()",
+        ],
+        ans: 1,
+        exp: "This is the classic race condition trap. await page.waitForEvent('download') BLOCKS execution until a download event fires. But the click that TRIGGERS the download comes after — so the code hangs forever waiting for an event that hasn't been triggered. Fix: use Promise.all([page.waitForEvent('download'), page.click(...)]) so both start simultaneously.",
+      },
+
+      {
+        q: "What does this configuration actually do — and what is the hidden risk?",
+        code: `export default defineConfig({
+  use: { baseURL: 'https://staging.example.com' },
+  projects: [
+    { name: 'prod', use: { baseURL: 'https://example.com' } },
+    { name: 'staging' },
+  ]
+});`,
+        opts: [
+          "Both projects use their own baseURL — 'staging' project has no baseURL so page.goto('/') fails",
+          "The 'prod' project overrides the global baseURL; 'staging' inherits the global baseURL — both work",
+          "Project-level use{} merges with global use{} — 'prod' gets both baseURLs which causes conflict",
+          "This config is invalid — baseURL must be set at project level, not in global use{}",
+        ],
+        ans: 1,
+        exp: "Project-level use{} OVERRIDES global use{} for that project. 'prod' uses its own baseURL. 'staging' has no use{} override so it INHERITS the global baseURL 'https://staging.example.com'. The risk: forgetting to set a project-level baseURL silently uses the global one, potentially running 'prod' tests against staging.",
+      },
+
+      {
+        q: "A developer uses expect.soft() for 8 assertions then a hard assertion. The 3rd and 6th soft assertions fail. What is reported?",
+        code: `test('form validation', async ({ page }) => {
+  await expect.soft(page.getByTestId('f1')).toBeVisible(); // passes
+  await expect.soft(page.getByTestId('f2')).toBeVisible(); // passes
+  await expect.soft(page.getByTestId('f3')).toBeVisible(); // FAILS
+  await expect.soft(page.getByTestId('f4')).toBeVisible(); // passes
+  await expect.soft(page.getByTestId('f5')).toBeVisible(); // passes
+  await expect.soft(page.getByTestId('f6')).toBeVisible(); // FAILS
+  await expect.soft(page.getByTestId('f7')).toBeVisible(); // passes
+  await expect.soft(page.getByTestId('f8')).toBeVisible(); // passes
+  await expect(page).toHaveURL('/form');                   // passes
+});`,
+        opts: [
+          "Test PASSES — soft failures are warnings only and don't affect test result",
+          "Test FAILS — reports only the 3rd failure (first failure stops soft collection)",
+          "Test FAILS — reports both the 3rd and 6th failures together at end of test",
+          "Test FAILS — reports only the 6th failure (last failure wins)",
+        ],
+        ans: 2,
+        exp: "Soft assertions NEVER stop the test — all 8 run regardless of failures. At the END of the test, if any soft assertion failed, the test is marked FAILED and ALL soft failures are reported together. The hard assertion also runs and passes. The final test status: FAILED, showing both the 3rd and 6th failures in the report.",
+      },
+
+      {
+        q: "What is the key difference between these two waiting strategies?",
+        code: `// Strategy A
+await page.waitForLoadState('networkidle');
+
+// Strategy B
+await page.waitForResponse('**/api/dashboard/data');`,
+        opts: [
+          "A waits for all network to stop for 500ms — may wait too long or too short; B waits for a specific response — precise but only works for known endpoints",
+          "A and B are equivalent — both wait until the API completes loading",
+          "A is deprecated in Playwright v1.30+; B is the recommended replacement",
+          "B waits for the request to be sent; A waits for the response to be received",
+        ],
+        ans: 0,
+        exp: "networkidle waits until there are no network requests for 500ms — this is IMPRECISE: it can timeout on sites with polling, or pass too early on slow networks. waitForResponse targets a SPECIFIC API response — far more reliable for SPAs. networkidle is useful for static pages; waitForResponse is better for data-driven pages.",
+      },
+
+      {
+        q: "What is wrong with this custom fixture definition?",
+        code: `export const test = base.extend<{ authPage: Page }>({
+  authPage: async ({ page }, use) => {
+    await page.goto('/login');
+    await page.fill('#email', 'user@test.com');
+    await page.click('#submit');
+    await page.waitForURL('/dashboard');
+    use(page);
+  },
+});`,
+        opts: [
+          "The generic type <{ authPage: Page }> should be <{ authPage: Page; }> with semicolon",
+          "use(page) is not awaited — the fixture teardown will not execute and the page may close prematurely",
+          "page.fill() should use getByLabel() to follow best practices inside fixtures",
+          "Fixtures cannot call page.goto() — navigation must happen inside the test body",
+        ],
+        ans: 1,
+        exp: "use() MUST be awaited: await use(page). Without await, the async generator doesn't suspend — Playwright immediately runs teardown code and may close the page before the test body finishes. This causes intermittent 'page closed' errors. Always await use() in custom fixtures — it's what pauses execution during the test.",
+      },
+
+      {
+        q: "This test passes locally with 1 worker but fails with workers:4. What is the root cause?",
+        code: `test.describe('Cart Tests', () => {
+  test.beforeAll(async ({ request }) => {
+    await request.post('/api/seed', { data: { cartId: 'test-cart-1' } });
+  });
+  test('add item', async ({ page }) => {
+    await page.goto('/cart/test-cart-1');
+    await page.getByRole('button', { name: 'Add' }).click();
+    await expect(page.getByTestId('item-count')).toHaveText('1');
+  });
+  test('remove item', async ({ request }) => {
+    await request.delete('/api/cart/test-cart-1/items/all');
+    await expect(...);
+  });
+});`,
+        opts: [
+          "request fixture cannot be used in beforeAll — it is only available in test bodies",
+          "With workers:4 tests from other describe blocks may modify test-cart-1 simultaneously — shared test data causes race conditions",
+          "beforeAll only runs once but with parallel workers it may run multiple times",
+          "page.goto() with a hardcoded cartId is not compatible with parallel execution",
+        ],
+        ans: 1,
+        exp: "The hard-coded shared resource 'test-cart-1' is the problem. With workers:4, tests from different files may run simultaneously and all hit the same cart. One worker's 'add item' test may run while another worker's 'remove item' test is cleaning up — causing unpredictable state. Fix: generate unique IDs per test run using Date.now() or uuid.",
+      },
+
+      {
+        q: "What does this trace configuration ACTUALLY record vs what people assume it records?",
+        code: `use: {
+  trace: 'on-first-retry',
+  screenshot: 'only-on-failure',
+  video: 'retain-on-failure'
+}`,
+        opts: [
+          "trace records on first retry; screenshot and video record only when ALL three conditions are met simultaneously",
+          "trace only records during the FIRST retry attempt — if a test fails on attempt 1 with no retries configured, NO trace is captured at all",
+          "trace:'on-first-retry' is equivalent to trace:'retain-on-failure' when retries:0",
+          "screenshot and video settings override trace — if screenshot is off, trace is also disabled",
+        ],
+        ans: 1,
+        exp: "'on-first-retry' ONLY records a trace during the first retry. If retries:0 is set (or not configured), a failing test has NO retries — so NO trace is ever recorded. This surprises many developers who wonder why traces are missing for failed tests. Use 'retain-on-failure' if you want traces for ALL failures regardless of retry config.",
+      },
+    ],
+    [
+      {
+        q: "SCENARIO: This POM test passes in isolation but fails when run in parallel with other tests. Identify the exact line causing the issue.",
+        code: `export class CartPage {
+  static itemCount = 0;  // Line 1
+
+  async addItem(page: Page) {
+    await page.getByRole('button',{name:'Add'}).click();
+    CartPage.itemCount++;           // Line 2
+    return CartPage.itemCount;      // Line 3
+  }
+}
+test('verify cart count', async ({ page }) => {
+  const cart = new CartPage();
+  await cart.addItem(page);
+  expect(CartPage.itemCount).toBe(1);  // Line 4
+});`,
+        opts: [
+          "Line 4 — toBe(1) should be toBeGreaterThan(0) to handle parallel runs",
+          "Line 1 — static class property is shared across ALL test instances in ALL parallel workers, causing count to accumulate across tests",
+          "Line 2 — itemCount++ is not atomic and causes race conditions in async code",
+          "Line 3 — returning a static value from an async method causes Promise resolution issues",
+        ],
+        ans: 1,
+        exp: "Static class properties in JavaScript are shared across ALL instances of the class in the same process. With parallel workers, multiple CartPage instances increment the SAME static counter. Test isolation is broken — the count carries over between tests. Fix: make itemCount an instance property (this.itemCount = 0) in the constructor, not static.",
+      },
+
+      {
+        q: "SCENARIO: A QA engineer writes this to test a multi-step form. The test passes on first run but ALWAYS fails on retry. Find the bug.",
+        code: `test('multi-step form', async ({ page }) => {
+  await page.goto('/form/step1');
+  await page.fill('[name=firstName]', 'John');
+  await page.click('#next');
+  await page.fill('[name=email]', 'john@test.com');
+  await page.click('#next');
+  await page.fill('[name=card]', '4111111111111111');
+  await page.click('#submit');
+  await expect(page.getByText('Order Confirmed')).toBeVisible();
+});`,
+        opts: [
+          "page.fill() should be page.getByLabel().fill() — direct selectors fail on retry",
+          "On retry, the form resets to step 1 but the test tries to fill step 2 fields immediately without re-navigating through step 1 first. The URL is still at step 1 but the code skips to step 2 filling.",
+          "await page.click('#next') is missing a waitForURL after each step to confirm navigation succeeded before proceeding",
+          "page.goto('/form/step1') should include { waitUntil:'networkidle' } to ensure form JS is loaded before filling",
+        ],
+        ans: 2,
+        exp: "On retry, the page goes back to /form/step1 via page.goto(). After clicking #next, the test immediately tries to fill the step 2 email field — but if the navigation to step 2 hasn't completed yet, the email field doesn't exist. Adding await page.waitForURL('**/step2') after each #next click ensures the page has transitioned before filling the next step's fields.",
+      },
+
+      {
+        q: "SCENARIO: This fixture is used in 50 tests. A senior engineer says it has a serious performance problem. What is it?",
+        code: `export const test = base.extend({
+  authenticatedPage: async ({ browser }, use) => {
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    await page.goto('/login');
+    await page.fill('#email', 'user@test.com');
+    await page.fill('#password', 'pass');
+    await page.click('#submit');
+    await page.waitForURL('/dashboard');
+    await use(page);
+    await context.close();
+  }
+});`,
+        opts: [
+          "browser.newContext() is called inside the fixture — it should be called once globally in playwright.config.ts",
+          "The fixture performs a full UI login flow for EVERY one of the 50 tests — 50 × login UI interaction. Should use storageState to load saved auth instead",
+          "context.close() in teardown is redundant — Playwright auto-closes contexts after each test",
+          "page.waitForURL() blocks the fixture setup — it should be moved into the test body",
+        ],
+        ans: 1,
+        exp: "This fixture logs in via the UI for EVERY test that uses it — 50 tests = 50 full login flows. Each login involves 3 network round-trips plus page navigation. The fix: run login ONCE in a global setup, save the auth state to a file using context.storageState(), then load it in the fixture via browser.newContext({ storageState: './auth.json' }). This reduces 50 login flows to 1.",
+      },
+
+      {
+        q: "SCENARIO: The test below has a concurrency bug. It sometimes passes, sometimes fails. What is the exact issue?",
+        code: `test('compare prices', async ({ page }) => {
+  await page.goto('/products');
+  const prices: number[] = [];
+  const cards = page.getByTestId('product-card');
+  const count = await cards.count();
+  for (let i = 0; i < count; i++) {
+    const text = await cards.nth(i).getByTestId('price').textContent();
+    prices.push(parseFloat(text!.replace('$','')));
+  }
+  expect(prices).toEqual(prices.slice().sort((a,b) => a - b));
+});`,
+        opts: [
+          "cards.nth(i) re-queries the DOM each iteration — if products load lazily, earlier indexes shift",
+          "parseFloat() returns NaN for prices like '$1,299.99' containing commas — the sort comparison becomes non-deterministic",
+          "The locator count() is called once but cards may be added/removed dynamically during the loop iterations, making the loop run with a stale count",
+          "expect().toEqual() does deep equality but sort() sorts in-place — slice().sort() creates a new array so the comparison is always between unsorted and sorted, which is correct",
+        ],
+        ans: 1,
+        exp: "parseFloat('$1,299.99'.replace('$','')) gives parseFloat('1,299.99') = 1 — it stops at the comma! For prices with thousands separators, you need .replace(/[$,]/g,'') to strip both $ and commas before parsing. With NaN values in the array, sort() behaves non-deterministically, causing the test to pass or fail randomly depending on the price data.",
+      },
+
+      {
+        q: "SCENARIO: This API + UI combined test fails only in the CI pipeline. What is the hidden environment-specific bug?",
+        code: `test('user appears in list after creation', async ({ page, request }) => {
+  const res = await request.post('/api/users', {
+    data: { name: 'Test User', email: \`u_\${Date.now()}@test.com\` }
+  });
+  expect(res.status()).toBe(201);
+  await page.goto('/admin/users');
+  await expect(page.getByText('Test User')).toBeVisible();
+});`,
+        opts: [
+          "request.post() and page share different base URLs in CI — the API creates on staging but the page loads prod",
+          "Date.now() generates duplicate timestamps in parallel CI workers running at the same millisecond",
+          "The UI may cache the user list — in CI the page loads BEFORE the database write commits, so 'Test User' doesn't appear yet. A waitForResponse on the list API after goto is needed",
+          "expect(res.status()).toBe(201) is a hard assertion that stops the test — it should be expect.soft() to allow the UI check to run even if the API fails",
+        ],
+        ans: 2,
+        exp: "CI databases are often slower than local. The API returns 201 (accepted the write) but the database may not have committed the record by the time the browser hits /admin/users. The page loads an empty or stale cache. Fix: after page.goto(), wait for the list API response to complete: await page.waitForResponse('**/api/users') before asserting the new user appears.",
+      },
+
+      {
+        q: "SCENARIO: A test must drag card from column A to column B in a Kanban board. dragTo() silently does nothing. The mouse approach also fails. What is the missing step?",
+        code: `const source = page.locator('.card').first();
+const target = page.locator('.column[data-col="done"]');
+const sBox = await source.boundingBox();
+const tBox = await target.boundingBox();
+await page.mouse.move(sBox!.x + sBox!.width/2, sBox!.y + sBox!.height/2);
+await page.mouse.down();
+await page.mouse.move(tBox!.x + tBox!.width/2, tBox!.y + tBox!.height/2, {steps:20});
+await page.mouse.up();`,
+        opts: [
+          "The steps value of 20 is too low — it needs at least 100 steps for Kanban libraries to detect the drag",
+          "boundingBox() must be called after mouse.down() not before — the layout shifts when dragging starts",
+          "Many Kanban libraries require a small delay (e.g., page.waitForTimeout(100)) between mouse.down() and the first mouse.move() to register the drag-start event before movement begins",
+          "mouse.move() before mouse.down() is incorrect — mouse.down() must always be the first mouse call",
+        ],
+        ans: 2,
+        exp: "Many drag-and-drop libraries (like react-beautiful-dnd) listen for a dragstart event which only fires if the mouse moves AFTER a hold period post-mousedown. Moving immediately without a pause means the library doesn't register it as a drag. Adding await page.waitForTimeout(100) between mouse.down() and the first mouse.move() gives the library time to detect the drag intent.",
+      },
+
+      {
+        q: "SCENARIO: What is the precise reason this cross-browser test fails ONLY on WebKit (Safari) but passes on Chromium and Firefox?",
+        code: `test('file upload', async ({ page }) => {
+  await page.goto('/upload');
+  await page.locator('input[type=file]').setInputFiles({
+    name: 'test.pdf',
+    mimeType: 'application/pdf',
+    buffer: Buffer.from('fake pdf content'),
+  });
+  await page.getByRole('button', { name: 'Upload' }).click();
+  await expect(page.getByText('Upload complete')).toBeVisible();
+});`,
+        opts: [
+          "WebKit does not support setInputFiles() — use the filechooser event approach instead",
+          "Buffer.from() creates a Node.js Buffer which is incompatible with WebKit's file handling — use Uint8Array instead",
+          "WebKit strictly validates MIME types — 'fake pdf content' is not valid PDF binary, so WebKit rejects the file server-side while Chrome/Firefox are more lenient about MIME validation",
+          "setInputFiles with a virtual file object (name/mimeType/buffer) is supported in all browsers — the failure is unrelated to the upload mechanism",
+        ],
+        ans: 2,
+        exp: "WebKit (Safari engine) performs stricter MIME type validation on uploads — it may inspect file headers/magic bytes. 'fake pdf content' as text doesn't match the PDF magic bytes (%PDF-). Chrome and Firefox are more permissive. The fix: use an actual valid PDF binary buffer, or better, use a real test fixture file from disk via setInputFiles('./fixtures/test.pdf').",
+      },
+
+      {
+        q: "SCENARIO: A developer exports the test object from a custom fixture file. Another dev imports from @playwright/test directly in the same project. What is the consequence?",
+        code: `// fixtures/index.ts
+export const test = base.extend({ loginPage: ... });
+
+// tests/login.spec.ts — Dev A (correct)
+import { test, expect } from '../fixtures';
+
+// tests/dashboard.spec.ts — Dev B (incorrect)
+import { test, expect } from '@playwright/test';`,
+        opts: [
+          "Dev B's tests will fail to compile — you cannot import from @playwright/test if a custom fixture file exists",
+          "Dev B's tests will run but the loginPage fixture will be undefined, throwing a runtime error when accessed",
+          "Dev B's tests run fine but do NOT have access to the custom loginPage fixture — they silently use the base test without any custom fixtures",
+          "Dev B's tests run with the custom fixtures anyway — Playwright auto-merges fixture definitions from all files",
+        ],
+        ans: 2,
+        exp: "Playwright does NOT auto-inject custom fixtures globally. Dev B importing from '@playwright/test' gets the BASE test object with no custom fixtures. The tests compile and run — but if they try to use { loginPage }, it will be undefined causing a runtime error. If they don't use custom fixtures, the tests pass but miss the setup. Always import from your fixtures file when custom fixtures are needed.",
+      },
+
+      {
+        q: "SCENARIO: This test checks if a toast notification appears after clicking Save. It passes 9/10 times. Find the exact flakiness cause.",
+        code: `test('save shows toast', async ({ page }) => {
+  await page.goto('/editor');
+  await page.getByRole('button', { name: 'Save' }).click();
+  await expect(page.getByRole('alert')).toHaveText('Saved successfully!');
+});`,
+        opts: [
+          "getByRole('alert') is not specific enough — use getByTestId to target the exact toast element",
+          "The toast appears then auto-dismisses after ~2 seconds. On slow machines the assertion starts AFTER the toast has already disappeared, since toHaveText() doesn't retry fast enough",
+          "toHaveText checks the full string — if the toast says 'Saved successfully! ✓' with extra characters it fails 10% of the time",
+          "The Save button click is async — without an explicit await page.waitForResponse() after click, the save may not complete before the assertion runs",
+        ],
+        ans: 1,
+        exp: "Playwright's expect() retries the assertion — but it can only assert on an element that EXISTS in the DOM. If the toast auto-dismisses (becomes detached) before the assertion engine first finds it and evaluates the text, the assertion fails with 'element not found'. Fix: use a shorter timeout on the assertion to catch it early, or increase the default assertion timeout, or assert on a more persistent confirmation element.",
+      },
+
+      {
+        q: "SCENARIO: This locator works in Playwright Inspector but throws 'strict mode violation' when run in the test. Why?",
+        code: `// In Inspector: found 1 element ✓
+// In test: throws strict mode violation
+await page.getByRole('button', { name: 'Submit' }).click();`,
+        opts: [
+          "Inspector runs in headed mode; strict mode only applies to headless execution",
+          "The page has only one Submit button when Inspector is open, but the full test navigation renders a modal or form that adds a second Submit button making the locator match 2 elements",
+          "Strict mode violation only occurs when using getByRole — switching to getByTestId disables strict mode",
+          "The Inspector uses a different locator engine than the test runner — Inspector is less strict",
+        ],
+        ans: 1,
+        exp: "'Strict mode violation' means the locator matched MORE THAN ONE element. In Inspector you inspected the page at a specific moment with 1 Submit button visible. But in the full test, by the time .click() runs, a modal has opened (or another form rendered) that also has a Submit button — now 2 elements match. Fix: scope the locator more precisely, e.g., page.getByRole('dialog').getByRole('button',{name:'Submit'}).",
+      },
+    ],
+  ];
+
+  let lvl = 0,
+    qi = 0,
+    scores = [0, 0, 0],
+    ans_map = [[], [], []];
+  function switchLevel(l) {
+    lvl = l;
+    qi = 0;
+    document
+      .querySelectorAll(".tab")
+      .forEach((t, i) => t.classList.toggle("active", i === l));
+    render();
+  }
+  function render() {
+    const qs = Q[lvl],
+      q = qs[qi],
+      tot = qs.length;
+    document.getElementById("prog").style.width = (qi / tot) * 100 + "%";
+    document.getElementById("qnum").textContent =
+      `Question ${qi + 1} of ${tot}`;
+    document.getElementById("sbadge").textContent = `Score: ${scores[lvl]}`;
+    const prev = ans_map[lvl][qi],
+      done = prev !== undefined;
+    const bl = ["b1", "b2", "b3"],
+      ll = ["Code Analysis", "Deep Concepts", "Scenario Traps"];
+    let h = `<div class="qcard"><span class="lvlbadge ${bl[lvl]}">${ll[lvl]}</span><p class="qtext">${q.q}</p>`;
+    if (q.code) h += `<div class="codeblock">${esc(q.code)}</div>`;
+    h += `<div class="opts">`;
+    ["A", "B", "C", "D"].forEach((k, i) => {
+      let c = "opt";
+      if (done) {
+        c += " locked";
+        if (i === q.ans) c += " correct";
+        else if (i === prev && prev !== q.ans) c += " wrong";
+      }
+      h += `<button class="${c}" onclick="pick(${i})"><span class="okey">${k}</span><span class="otext">${esc(q.opts[i])}</span></button>`;
+    });
+    h += `</div>`;
+    if (done) h += `<div class="explain"><strong>Why:</strong> ${q.exp}</div>`;
+    h += `</div><div class="navrow"><button class="btn" onclick="go(-1)" ${qi === 0 ? "disabled" : ""}>← Prev</button><span style="font-size:12px;color:var(--color-text-secondary)">${qi + 1}/${tot}</span>${qi < tot - 1 ? `<button class="btn btnp" onclick="go(1)">Next →</button>` : `<button class="btn btnp" onclick="finish()">Finish ✓</button>`}</div>`;
+    document.getElementById("area").innerHTML = h;
+  }
+  function esc(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function pick(i) {
+    if (ans_map[lvl][qi] !== undefined) return;
+    ans_map[lvl][qi] = i;
+    if (i === Q[lvl][qi].ans) scores[lvl]++;
+    render();
+  }
+  function go(d) {
+    const t = qi + d;
+    if (t >= 0 && t < Q[lvl].length) {
+      qi = t;
+      render();
+    }
+  }
+  function finish() {
+    const tot = Q[lvl].length,
+      s = scores[lvl],
+      pct = Math.round((s / tot) * 100);
+    const msg =
+      pct < 40
+        ? "These are genuinely hard — every wrong answer is a lesson 📖"
+        : pct < 60
+          ? "Solid effort on expert-level questions 💡"
+          : pct < 80
+            ? "You think like a senior QA engineer 🎯"
+            : "Exceptional — you are exam-ready 🏆";
+    document.getElementById("area").innerHTML =
+      `<div class="result"><p style="font-size:13px;color:var(--color-text-secondary)">Level ${lvl + 1} — Expert Edition</p><div class="rscore">${s}/${tot}</div><p style="font-size:13px;color:var(--color-text-secondary)">Accuracy: ${pct}%</p><p style="font-size:14px;color:var(--color-text-primary);margin:.75rem 0">${msg}</p><div class="stats"><div class="stat"><div class="snum">${s}</div><div class="slbl">Correct</div></div><div class="stat"><div class="snum">${tot - s}</div><div class="slbl">Wrong</div></div><div class="stat"><div class="snum">${pct}%</div><div class="slbl">Score</div></div></div><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="retry()">↺ Retry</button>${lvl < 2 ? `<button class="btn btnp" onclick="switchLevel(${lvl + 1})">Next Level →</button>` : `<button class="btn btnp" onclick="sendPrompt('Day 4 expert quiz done. L1:'+scores[0]+'/10 L2:'+scores[1]+'/10 L3:'+scores[2]+'/10. Analyze my weak areas in detail.')">Get Analysis ↗</button>`}</div></div><div class="navrow" style="margin-top:1rem"><button class="btn" onclick="go(-1)">← Review</button><span></span></div>`;
+  }
+  function retry() {
+    ans_map[lvl] = [];
+    scores[lvl] = 0;
+    qi = 0;
+    render();
+  }
+  render();
+</script>
