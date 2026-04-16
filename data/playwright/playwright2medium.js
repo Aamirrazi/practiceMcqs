@@ -19,7 +19,7 @@ const PlaywrightPart2Medium = {
       options: ["getByRole()", "getByTestId()", "getByText()", "getByLabel()"],
       correctIndex: 1,
       explanation:
-        "The getByTestId() method finds elements by their data-testid attribute and is considered the most stable option for automation[cite: 505].",
+        "The getByTestId() method finds elements by their data-testid attribute and is considered the most stable option for automation.",
     },
     {
       id: "p2m-02",
@@ -33,7 +33,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 1,
       explanation:
-        "Playwright automatically waits for an element to be Visible, Stable, capable of Receiving Events, and Enabled (or Editable for filling)[cite: 610]. Having a CSS id is not a requirement.",
+        "Playwright automatically waits for an element to be Visible, Stable, capable of Receiving Events, and Enabled (or Editable for filling). Having a CSS id is not a requirement.",
     },
     {
       id: "p2m-03",
@@ -48,7 +48,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 2,
       explanation:
-        "Soft assertions collect all failures and report them at the end; the test continues even after a failure[cite: 679].",
+        "Soft assertions collect all failures and report them at the end; the test continues even after a failure.",
     },
     {
       id: "p2m-04",
@@ -62,7 +62,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 1,
       explanation:
-        "For a native HTML select element, selectOption() allows you to select an option by its visible text, value attribute, or index[cite: 847, 849].",
+        "For a native HTML select element, selectOption() allows you to select an option by its visible text, value attribute, or index.",
     },
     {
       id: "p2m-05",
@@ -76,7 +76,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 0,
       explanation:
-        "The dragTo() method is the simplest approach for dragging an element to a target location[cite: 760, 765].",
+        "The dragTo() method is the simplest approach for dragging an element to a target location.",
     },
     {
       id: "p2m-06",
@@ -90,7 +90,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 1,
       explanation:
-        "You use page.frameLocator() and pass the selector (or name/URL) to interact with elements inside an iframe[cite: 930].",
+        "You use page.frameLocator() and pass the selector (or name/URL) to interact with elements inside an iframe.",
     },
     {
       id: "p2m-07",
@@ -106,7 +106,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 1,
       explanation:
-        "JavaScript dialogs (alert, confirm, prompt) are handled via the 'dialog' event in Playwright[cite: 964].",
+        "JavaScript dialogs (alert, confirm, prompt) are handled via the 'dialog' event in Playwright.",
     },
     {
       id: "p2m-08",
@@ -120,7 +120,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 1,
       explanation:
-        "The setInputFiles() method is used on a file input element to upload single or multiple files[cite: 1050, 1051].",
+        "The setInputFiles() method is used on a file input element to upload single or multiple files.",
     },
     {
       id: "p2m-09",
@@ -134,7 +134,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 1,
       explanation:
-        "Flaky tests are tests that sometimes pass and sometimes fail without any code change, making them the #1 enemy of reliable test automation[cite: 618, 619].",
+        "Flaky tests are tests that sometimes pass and sometimes fail without any code change, making them the #1 enemy of reliable test automation.",
     },
     {
       id: "p2m-10",
@@ -148,7 +148,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 2,
       explanation:
-        "The pressSequentially() method with a delay option types text character by character to simulate real typing[cite: 532].",
+        "The pressSequentially() method with a delay option types text character by character to simulate real typing.",
     },
     {
       id: "p2m-11",
@@ -162,7 +162,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 1,
       explanation:
-        "The correct syntax for a soft assertion is expect.soft(locator).method()[cite: 682].",
+        "The correct syntax for a soft assertion is expect.soft(locator).method().",
     },
     {
       id: "p2m-12",
@@ -177,7 +177,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 0,
       explanation:
-        "You can execute a click with modifiers by passing an options object: { modifiers: ['Shift'] } to the click method[cite: 725].",
+        "You can execute a click with modifiers by passing an options object: { modifiers: ['Shift'] } to the click method.",
     },
     {
       id: "p2m-13",
@@ -191,7 +191,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 2,
       explanation:
-        "The isChecked() method is used to read the state of a checkbox or radio button, returning a boolean[cite: 559].",
+        "The isChecked() method is used to read the state of a checkbox or radio button, returning a boolean.",
     },
     {
       id: "p2m-14",
@@ -206,7 +206,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 1,
       explanation:
-        "Playwright provides the context.waitForEvent('page') method to capture a new page when a click opens a new tab or window[cite: 901].",
+        "Playwright provides the context.waitForEvent('page') method to capture a new page when a click opens a new tab or window.",
     },
     {
       id: "p2m-15",
@@ -220,7 +220,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 1,
       explanation:
-        "Calling dialog.accept() clicks the OK or Yes button to accept the dialog popup[cite: 971, 984].",
+        "Calling dialog.accept() clicks the OK or Yes button to accept the dialog popup.",
     },
     {
       id: "p2m-16",
@@ -234,7 +234,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 2,
       explanation:
-        "Once the download event is captured, you use download.saveAs(path) to save it to a specific local path[cite: 1098].",
+        "Once the download event is captured, you use download.saveAs(path) to save it to a specific local path.",
     },
     {
       id: "p2m-17",
@@ -247,7 +247,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 1,
       explanation:
-        "DDT separates test logic from test data, reducing code duplication and allowing you to run hundreds of scenarios with multiple sets of input data[cite: 1136, 1137, 1146].",
+        "DDT separates test logic from test data, reducing code duplication and allowing you to run hundreds of scenarios with multiple sets of input data.",
     },
     {
       id: "p2m-18",
@@ -260,7 +260,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 1,
       explanation:
-        "The Page Object Model (POM) is a design pattern that creates an abstraction layer between your tests and the UI by encapsulating locators and actions[cite: 1247].",
+        "The Page Object Model (POM) is a design pattern that creates an abstraction layer between your tests and the UI by encapsulating locators and actions.",
     },
     {
       id: "p2m-19",
@@ -273,7 +273,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 0,
       explanation:
-        "You simulate a copy action using key combinations with the press method: page.keyboard.press('Control+C')[cite: 748].",
+        "You simulate a copy action using key combinations with the press method: page.keyboard.press('Control+C').",
     },
     {
       id: "p2m-20",
@@ -287,7 +287,7 @@ const PlaywrightPart2Medium = {
       ],
       correctIndex: 1,
       explanation:
-        "The isVisible() method is an element control used to check visibility, returning a boolean value[cite: 550, 551].",
+        "The isVisible() method is an element control used to check visibility, returning a boolean value.",
     },
   ],
 };
