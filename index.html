@@ -1,254 +1,771 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QA Practice Hub</title>
-
-    <!-- Fonts -->
+    <title>ExamPrep — Practice Tests</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Code:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
+    <style>
+      /* ─── Reset & Base ─────────────────────────────────── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    <link rel="stylesheet" href="style.css" />
+      :root {
+        --white: #ffffff;
+        --off-white: #f8f7f5;
+        --border: #e8e5e0;
+        --muted: #9b9690;
+        --text: #1a1916;
+        --text-2: #4a4844;
+        --green: #1a7a4a;
+        --green-bg: #edf7f1;
+
+        /* ── Topic palette ─────────────────────────────────── */
+        --c-playwright: #1a6b3a;
+        --c-genai: #7c3aed;
+        --c-javascript: #d4860a;
+        --c-webdev-integration: #0369a1;
+        --c-python: #2e7d32;
+        --c-sql: #1565c0;
+        --c-react: #0097a7;
+        --c-general: #6b4c9a;
+        --c-custom: #555555;
+      }
+
+      html,
+      body {
+        min-height: 100%;
+        font-family: "DM Sans", sans-serif;
+        background: var(--off-white);
+        color: var(--text);
+      }
+
+      .dashboard {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ─── Header ───────────────────────────────────────── */
+      .dashboard-header {
+        background: var(--white);
+        border-bottom: 1.5px solid var(--border);
+        padding: 0 48px;
+        height: 66px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 20;
+      }
+
+      .logo {
+        font-family: "Lora", serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .logo span {
+        color: var(--muted);
+        font-weight: 400;
+        font-style: italic;
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      .hdr-stat {
+        font-size: 0.8rem;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .hdr-stat strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      /* ─── Hero ─────────────────────────────────────────── */
+      .hero {
+        padding: 52px 48px 36px;
+        border-bottom: 1.5px solid var(--border);
+        background: var(--white);
+      }
+
+      .hero-eyebrow {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .eyebrow-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--green);
+        flex-shrink: 0;
+        animation: pulse 2s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.5;
+          transform: scale(0.8);
+        }
+      }
+
+      .hero h1 {
+        font-family: "Lora", serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.15;
+        margin-bottom: 10px;
+      }
+      .hero p {
+        font-size: 1rem;
+        color: var(--text-2);
+        line-height: 1.65;
+        max-width: 500px;
+      }
+
+      /* ─── Topic nav tabs ───────────────────────────────── */
+      .topic-nav {
+        background: var(--white);
+        border-bottom: 1.5px solid var(--border);
+        padding: 0 48px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0;
+        overflow-x: auto;
+      }
+
+      .topic-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 12px 16px 11px;
+        border: none;
+        background: transparent;
+        border-bottom: 2.5px solid transparent;
+        color: var(--muted);
+        cursor: pointer;
+        transition:
+          color 0.15s,
+          border-color 0.15s;
+        text-decoration: none;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .topic-pill:hover {
+        color: var(--text);
+      }
+      .topic-pill.active {
+        color: var(--topic-color, var(--text));
+        border-bottom-color: var(--topic-color, var(--text));
+      }
+      .pill-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--topic-color, var(--muted));
+        flex-shrink: 0;
+        opacity: 0.6;
+        transition: opacity 0.15s;
+      }
+      .topic-pill.active .pill-dot {
+        opacity: 1;
+      }
+      .pill-count {
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: var(--muted);
+      }
+
+      /* ─── Content area ─────────────────────────────────── */
+      .content-area {
+        flex: 1;
+        padding: 0 48px 72px;
+      }
+
+      /* ─── Topic section ────────────────────────────────── */
+      .topic-section {
+        padding-top: 44px;
+        scroll-margin-top: 82px;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1.5px solid var(--border);
+      }
+
+      .section-accent {
+        width: 4px;
+        height: 38px;
+        border-radius: 4px;
+        background: var(--topic-color, var(--text));
+        flex-shrink: 0;
+        margin-right: 16px;
+      }
+
+      .section-icon {
+        font-size: 1.55rem;
+        line-height: 1;
+        margin-right: 12px;
+      }
+
+      .section-titles {
+        flex: 1;
+      }
+      .section-title {
+        font-family: "Lora", serif;
+        font-size: 1.22rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+        margin-bottom: 2px;
+      }
+      .section-desc {
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.4;
+      }
+
+      .section-badge {
+        flex-shrink: 0;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        padding: 4px 11px;
+        border-radius: 20px;
+        color: var(--topic-color, var(--text));
+        background: color-mix(
+          in srgb,
+          var(--topic-color, #555) 10%,
+          transparent
+        );
+      }
+
+      /* ─── Cards grid ───────────────────────────────────── */
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+        gap: 15px;
+      }
+
+      /* ─── Card ─────────────────────────────────────────── */
+      .card {
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        padding: 22px 22px 18px;
+        cursor: pointer;
+        transition:
+          border-color 0.15s,
+          transform 0.15s,
+          box-shadow 0.15s;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 3px;
+        border-radius: 0 2px 2px 0;
+        background: var(--topic-color, var(--text));
+        opacity: 0.2;
+        transition: opacity 0.15s;
+      }
+
+      .card:hover {
+        border-color: #bbb;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.07);
+      }
+      .card:hover::after {
+        opacity: 1;
+      }
+
+      .card-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 11px;
+      }
+
+      .card-icon {
+        font-size: 1.7rem;
+        line-height: 1;
+      }
+
+      .card-badges {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .card-badge {
+        font-size: 0.63rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 3px 8px;
+        border-radius: 20px;
+        background: color-mix(
+          in srgb,
+          var(--topic-color, #555) 12%,
+          transparent
+        );
+        color: var(--topic-color, #555);
+      }
+
+      .card-diff {
+        font-size: 0.63rem;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 20px;
+        background: var(--off-white);
+        color: var(--text-2);
+      }
+
+      .card-title {
+        font-family: "Lora", serif;
+        font-size: 1.08rem;
+        font-weight: 600;
+        line-height: 1.3;
+        margin-bottom: 6px;
+        letter-spacing: -0.01em;
+      }
+
+      .card-desc {
+        font-size: 0.835rem;
+        color: var(--text-2);
+        line-height: 1.55;
+        flex: 1;
+        margin-bottom: 16px;
+      }
+
+      .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 12px;
+        border-top: 1px solid var(--border);
+      }
+
+      .card-stats {
+        display: flex;
+        gap: 13px;
+      }
+      .card-stat {
+        font-size: 0.75rem;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 3px;
+      }
+      .card-stat strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .card-start-btn {
+        background: var(--text);
+        color: var(--white);
+        border: none;
+        border-radius: 7px;
+        padding: 7px 16px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: opacity 0.15s;
+        white-space: nowrap;
+      }
+      .card-start-btn:hover {
+        opacity: 0.8;
+      }
+
+      .best-score {
+        position: absolute;
+        top: 10px;
+        right: 12px;
+        font-size: 0.67rem;
+        font-weight: 600;
+        color: var(--green);
+        background: var(--green-bg);
+        padding: 2px 8px;
+        border-radius: 20px;
+      }
+
+      /* ─── Empty ────────────────────────────────────────── */
+      .empty-state {
+        padding: 64px 0;
+        text-align: center;
+        color: var(--text-2);
+      }
+      .empty-state h2 {
+        font-family: "Lora", serif;
+        font-size: 1.3rem;
+        margin-bottom: 8px;
+      }
+
+      /* ─── Responsive ───────────────────────────────────── */
+      @media (max-width: 680px) {
+        .dashboard-header,
+        .hero,
+        .topic-nav,
+        .content-area {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+        .hero h1 {
+          font-size: 1.85rem;
+        }
+      }
+    </style>
   </head>
-
   <body>
-    <!-- ── NAVBAR ─────────────────────────────────────────────── -->
-    <header class="navbar" role="banner">
-      <div class="navbar-inner">
-        <div class="nav-brand">QA<span>·</span>PRACTICE</div>
+    <div class="dashboard">
+      <!-- Header -->
+      <header class="dashboard-header">
+        <a class="logo" href="index.html">Exam<span>Prep</span></a>
+        <div class="header-right">
+          <div class="hdr-stat" id="hdrTopics"></div>
+          <div class="hdr-stat" id="hdrSets"></div>
+        </div>
+      </header>
 
-        <!-- Theme toggle -->
-        <button
-          class="theme-pill"
-          id="themeToggle"
-          role="switch"
-          aria-checked="false"
-          aria-label="Toggle dark mode"
-        >
-          <span class="t-icon t-sun" aria-hidden="true">☀️</span>
-          <div class="toggle-track" aria-hidden="true">
-            <div class="toggle-thumb"></div>
-          </div>
-          <span class="t-icon t-moon" aria-hidden="true">🌙</span>
-          <span class="t-label" id="themeLabel">Light</span>
-        </button>
-      </div>
-    </header>
-
-    <!-- ══════════════════════════════════════════════════════════
-         VIEW: DASHBOARD
-         ══════════════════════════════════════════════════════ -->
-    <main data-view="dashboard" class="app-shell" aria-label="Test Dashboard">
-      <!-- Hero -->
-      <section class="dashboard-hero" aria-labelledby="heroTitle">
+      <!-- Hero
+      <section class="hero">
         <div class="hero-eyebrow">
-          <span class="eyebrow-pulse" aria-hidden="true"></span>
-          Interactive Assessment Hub
+          <span class="eyebrow-dot"></span>Interactive Practice Hub
         </div>
-        <!-- <h1 class="hero-title" id="heroTitle">Practice<br /><em>Exams</em></h1>
-        <p class="hero-sub">
-          Scenario-based questions covering Playwright automation and JMeter
-          performance testing. Select a module below to begin.
-        </p> -->
-      </section>
-
-      <!-- Dynamically populated test cards -->
-      <div id="dashboardGrid" role="list" aria-label="Available tests"></div>
-    </main>
-
-    <!-- ══════════════════════════════════════════════════════════
-         VIEW: EXAM
-         ══════════════════════════════════════════════════════ -->
-    <div data-view="exam" hidden aria-hidden="true">
-      <!-- Sticky exam header -->
-      <div class="exam-header app-shell">
-        <div class="exam-header-top">
-          <button
-            class="back-btn back-to-dashboard"
-            aria-label="Return to dashboard"
-          >
-            ← Dashboard
-          </button>
-          <div>
-            <h1 class="exam-title" id="examTitle">Loading…</h1>
-            <p class="exam-meta" id="examMeta"></p>
-          </div>
-        </div>
-
-        <!-- Progress -->
-        <div class="progress-row" aria-label="Exam progress">
-          <div
-            class="progress-bar-wrap"
-            role="progressbar"
-            aria-valuemin="0"
-            aria-valuemax="100"
-            aria-valuenow="0"
-          >
-            <div class="progress-bar-fill" id="progressBar"></div>
-          </div>
-          <span
-            class="progress-counter"
-            id="progressCounter"
-            aria-live="polite"
-          >
-            Answered 0 of 0
-          </span>
-        </div>
-      </div>
-
-      <!-- Question list -->
-      <div class="app-shell">
-        <div id="examContainer" role="list" aria-label="Exam questions"></div>
-
-        <!-- Submit footer -->
-        <footer class="exam-footer" aria-label="Exam actions">
-          <p class="exam-footer-info">
-            Review all questions before submitting. Answers cannot be changed
-            after submission.
-          </p>
-          <button
-            class="submit-btn"
-            id="submitBtn"
-            type="button"
-            disabled
-            aria-describedby="progressCounter"
-          >
-            Submit Exam →
-          </button>
-        </footer>
-      </div>
-    </div>
-
-    <!-- ══════════════════════════════════════════════════════════
-         VIEW: RESULTS
-         ══════════════════════════════════════════════════════ -->
-    <div data-view="results" hidden aria-hidden="true">
-      <div class="app-shell">
-        <!-- Score + summary (populated by JS) -->
-        <section class="results-header-section" aria-label="Your results">
-          <div class="results-actions">
-            <button
-              class="back-btn back-to-dashboard"
-              aria-label="Return to dashboard"
-            >
-              ← Dashboard
-            </button>
-          </div>
-          <div id="resultsHeader"></div>
-        </section>
-
-        <!-- Full question review -->
-        <section aria-label="Question review">
-          <h2 class="review-section-title">Question Review</h2>
-          <div id="reviewList" role="list" aria-label="Reviewed answers"></div>
-        </section>
-      </div>
-    </div>
-
-    <!-- ══════════════════════════════════════════════════════════
-         SUBMIT CONFIRMATION MODAL
-         ══════════════════════════════════════════════════════ -->
-    <div
-      class="modal-overlay"
-      id="submitModal"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modalTitle"
-      aria-describedby="modalMessage"
-      hidden
-      aria-hidden="true"
-    >
-      <div class="modal-box">
-        <h2 class="modal-title" id="modalTitle">Submit Exam?</h2>
-        <p class="modal-message" id="modalMessage">
-          Are you sure you want to submit your answers?
+        <h1>Practice Tests</h1>
+        <p>
+          Scenario-driven questions across multiple technology tracks. Pick a
+          topic below or scroll to browse everything.
         </p>
-        <div class="modal-actions">
-          <button class="btn-ghost" id="modalCancelBtn" type="button">
-            Keep Reviewing
-          </button>
-          <button class="btn-primary" id="modalConfirmBtn" type="button">
-            Submit Now
-          </button>
+      </section> -->
+
+      <!-- Topic nav -->
+      <nav
+        class="topic-nav"
+        id="topicNav"
+        aria-label="Jump to topic section"
+      ></nav>
+
+      <!-- Grouped content -->
+      <main class="content-area" id="contentArea">
+        <div class="empty-state">
+          <div style="font-size: 2rem; margin-bottom: 10px">⏳</div>
+          <h2>Loading modules…</h2>
         </div>
-      </div>
+      </main>
     </div>
 
-    <!-- ══════════════════════════════════════════════════════════
-         DATA MODULES
-         Register new test modules here by:
-         1. Adding a <script> tag for your data file.
-         2. Pushing the exported variable into window.APP_MODULES.
-
-         Example:
-           <script src="data/my-new-test.js"></script>
-           (then add  MyNewTest  to the push() call below)
-         ══════════════════════════════════════════════════════ -->
-
-    <!-- <script src="data/playwright-medium.js"></script>
-    <script src="data/playwright-hard.js"></script>
-    <script src="data/playwright2medium.js"></script>
-    <script src="data/playwright2hard.js"></script> -->
-    <script src="data/performance-testing.js"></script>
-    <script src="data/fundamental/htmlfundamental.js"></script>
-    <script src="data/fundamental/dombasics.js"></script>
-    <script src="data/fundamental/set5.js"></script>
-    <script src="data/fundamental/doms2.js"></script>
-    <script src="data/fundamental/css.js"></script>
-    <script src="data/typescript/set1.js"></script>
-    <script src="data/typescript/set2.js"></script>
-    <script src="data/typescript/set3.js"></script>
-    <!-- <script src="data/playwright/playwright-advanced.js"></script> -->
-    <script src="data/playwright/playwright-hard.js"></script>
-    <script src="data/playwright/playwright-medium.js"></script>
-    <script src="data/playwright/playwright2hard.js"></script>
-    <script src="data/playwright/playwright2medium.js"></script>
-    <script src="data/playwright/playwright3.js"></script>
-    <script src="data/performance/performance-testing.js"></script>
-    <script src="data/performance/set1.js"></script>
-    <script src="data/performance/set2.js"></script>
-    <script src="data/performance/set3.js"></script>
-    <script src="data/apiAutomation/set1.js"></script>
-    <script src="data/apiAutomation/set2.js"></script>
-    <script src="data/apiAutomation/set3.js"></script>
-    <script src="data/apiAutomation/set4.js"></script>
-    <script src="data/all/set1.js"></script>
-    <script src="data/all/set2.js"></script>
-    <script src="data/all/set3.js"></script>
-    <script src="data/all/set4.js"></script>
-    <script src="data/all/set5.js"></script>
-    <script src="data/L1/set1.js"></script>
-    <script src="data/L1/set2.js"></script>
-    <script src="data/playwright/set1.js"></script>
-    <script src="data/fundamental/set1.js"></script>
-    <script src="data/genai/set1.js"></script>
-
+    <!-- ══════════════════════════════════════════════════════
+     DATA FILES — add one <script> per data file, then
+     add the exported variable to window._TESTS below.
+  ══════════════════════════════════════════════════════ -->
+    <script src="data/genaifundamental.js"></script>
+    <script src="data/playwright.js"></script>
     <!-- <script src="data/sample-test.js"></script> -->
+    <script src="data/js-fundamentals.js"></script>
+    <!-- <script src="data/your-new-module.js"></script> -->
 
-    <!-- Module registry — order controls Dashboard order -->
     <script>
-      window.APP_MODULES = [
-        PlaywrightGenAIAdvanced,
-        PlaywrightGenAIVol1,
-        PlaywrightEnterpriseSet1,
-        PlaywrightEnterpriseSet2,
-        PlaywrightEnterpriseSet3,
-        CSSAdvancedModule,
-        JavaScriptAdvancedModule,
-        WebDevIntegrationModule,
-        genset3,
-        genset2,
-        genset1,
-        // SampleTest,   ← uncomment when you add the file above
+      window._TESTS = [
+        GenAIFundamentals,
+        PlaywrightTestingModule,
+        // SampleTest,
+        web1,
+        web2,
+        web3,
+        // YourNewModule,
       ];
     </script>
 
-    <!-- Core app logic (must come AFTER modules are registered) -->
-    <script src="app.js"></script>
+    <script>
+      /* ═══════════════════════════════════════════════════════════
+   TOPIC REGISTRY
+   Define label, icon, description, and colour per topic key.
+   The `order` number controls the section display order.
+   Add new entries here whenever you introduce a new topic.
+═══════════════════════════════════════════════════════════ */
+      const TOPIC_REGISTRY = {
+        playwright: {
+          label: "Playwright Testing",
+          icon: "🎭",
+          description:
+            "End-to-end browser automation, locator strategy, network mocking, CI/CD integration, and advanced test architecture.",
+          color: "#1a6b3a",
+          order: 1,
+        },
+        javascript: {
+          label: "Generative AI & MCP",
+          icon: "🤖",
+          description:
+            "Large language models, agentic AI architecture, the Model Context Protocol, prompt engineering, and responsible AI.",
+          color: "#7c3aed",
+          order: 2,
+        },
+        "webdev-integration": {
+          label: "Web Development",
+          icon: "🌐",
+          description:
+            "CSS architecture, JavaScript runtime internals, browser APIs, security patterns, and full-stack frontend engineering.",
+          color: "#0369a1",
+          order: 3,
+        },
+        general: {
+          label: "General",
+          icon: "📋",
+          description:
+            "Foundational and mixed concepts across software engineering disciplines.",
+          color: "#6b4c9a",
+          order: 4,
+        },
+        python: {
+          label: "Python",
+          icon: "🐍",
+          description:
+            "Python language fundamentals, data structures, and ecosystem tooling.",
+          color: "#2e7d32",
+          order: 5,
+        },
+        sql: {
+          label: "SQL & Databases",
+          icon: "🗄️",
+          description:
+            "Query design, schema modelling, performance tuning, and database engineering.",
+          color: "#1565c0",
+          order: 6,
+        },
+        react: {
+          label: "React",
+          icon: "⚛️",
+          description:
+            "React patterns, hooks, performance optimisation, and component architecture.",
+          color: "#0097a7",
+          order: 7,
+        },
+        custom: {
+          label: "Other",
+          icon: "📝",
+          description: "Custom and miscellaneous test sets.",
+          color: "#555555",
+          order: 99,
+        },
+      };
+
+      /* ─── Helpers ──────────────────────────────────────────── */
+      function topicInfo(key) {
+        return (
+          TOPIC_REGISTRY[key] || {
+            label: key,
+            icon: "📄",
+            description: "",
+            color: "#555",
+            order: 50,
+          }
+        );
+      }
+
+      function diffDot(d) {
+        return (
+          { Beginner: "🟢", Intermediate: "🟡", Advanced: "🔴" }[d] || "⚪"
+        );
+      }
+
+      function bestScore(id) {
+        try {
+          const r = localStorage.getItem("ep_best_" + id);
+          return r ? JSON.parse(r) : null;
+        } catch {
+          return null;
+        }
+      }
+
+      /* ─── Render ───────────────────────────────────────────── */
+      function render(tests) {
+        const area = document.getElementById("contentArea");
+        const nav = document.getElementById("topicNav");
+
+        if (!tests || !tests.length) {
+          area.innerHTML = `<div class="empty-state">
+      <div style="font-size:2rem;margin-bottom:10px">📭</div>
+      <h2>No test modules found</h2>
+      <p>Add data files and register them in <code>window._TESTS</code>.</p>
+    </div>`;
+          return;
+        }
+
+        // ── Group & sort ──────────────────────────────────────
+        const groups = {};
+        tests.forEach((t) => {
+          const k = t.meta.topic || "custom";
+          if (!groups[k]) groups[k] = [];
+          groups[k].push(t);
+        });
+
+        const topicKeys = Object.keys(groups).sort(
+          (a, b) => (topicInfo(a).order || 99) - (topicInfo(b).order || 99),
+        );
+
+        // ── Header stats ──────────────────────────────────────
+        document.getElementById("hdrTopics").innerHTML =
+          `<strong>${topicKeys.length}</strong>&nbsp;topic${topicKeys.length !== 1 ? "s" : ""}`;
+        document.getElementById("hdrSets").innerHTML =
+          `<strong>${tests.length}</strong>&nbsp;test set${tests.length !== 1 ? "s" : ""}`;
+
+        // ── Nav tabs ──────────────────────────────────────────
+        nav.innerHTML = "";
+        topicKeys.forEach((k, i) => {
+          const ti = topicInfo(k);
+          const pill = document.createElement("a");
+          pill.className = "topic-pill" + (i === 0 ? " active" : "");
+          pill.href = "#topic-" + k;
+          pill.style.setProperty("--topic-color", ti.color);
+          pill.innerHTML = `
+      <span class="pill-dot"></span>
+      ${ti.icon} ${ti.label}
+      <span class="pill-count">(${groups[k].length})</span>`;
+          pill.addEventListener("click", () => {
+            document
+              .querySelectorAll(".topic-pill")
+              .forEach((p) => p.classList.remove("active"));
+            pill.classList.add("active");
+          });
+          nav.appendChild(pill);
+        });
+
+        // Scroll spy — highlight the in-view topic tab
+        const spy = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                const id = "#" + e.target.id;
+                document
+                  .querySelectorAll(".topic-pill")
+                  .forEach((p) =>
+                    p.classList.toggle("active", p.getAttribute("href") === id),
+                  );
+              }
+            });
+          },
+          { rootMargin: "-20% 0px -70% 0px" },
+        );
+
+        // ── Sections ──────────────────────────────────────────
+        area.innerHTML = "";
+        topicKeys.forEach((k) => {
+          const ti = topicInfo(k);
+          const mods = groups[k];
+
+          const sec = document.createElement("section");
+          sec.className = "topic-section";
+          sec.id = "topic-" + k;
+
+          sec.innerHTML = `
+      <div class="section-header" style="--topic-color:${ti.color}">
+        <div class="section-accent"></div>
+        <div class="section-icon">${ti.icon}</div>
+        <div class="section-titles">
+          <div class="section-title">${ti.label}</div>
+          ${ti.description ? `<div class="section-desc">${ti.description}</div>` : ""}
+        </div>
+        <span class="section-badge" style="--topic-color:${ti.color}">
+          ${mods.length}&nbsp;set${mods.length !== 1 ? "s" : ""}
+        </span>
+      </div>
+      <div class="cards-grid"></div>`;
+
+          const grid = sec.querySelector(".cards-grid");
+          mods.forEach((t) => grid.appendChild(buildCard(t, ti.color)));
+          area.appendChild(sec);
+          spy.observe(sec);
+        });
+      }
+
+      /* ─── Card builder ─────────────────────────────────────── */
+      function buildCard(test, color) {
+        const m = test.meta;
+        const best = bestScore(m.id);
+
+        const card = document.createElement("div");
+        card.className = "card";
+        card.style.setProperty("--topic-color", color);
+
+        card.innerHTML = `
+    ${best ? `<div class="best-score">🏆 ${best.score}/${best.total}</div>` : ""}
+    <div class="card-top">
+      <span class="card-icon">${m.icon || "📋"}</span>
+      <div class="card-badges">
+        <span class="card-badge">${m.topicLabel}</span>
+        <span class="card-diff">${diffDot(m.difficulty)} ${m.difficulty}</span>
+      </div>
+    </div>
+    <div class="card-title">${m.testTitle}</div>
+    <div class="card-desc">${m.description}</div>
+    <div class="card-footer">
+      <div class="card-stats">
+        <div class="card-stat"><strong>${m.questionCount}</strong>&nbsp;Qs</div>
+        <div class="card-stat"><strong>${m.estimatedMinutes}</strong>&nbsp;min</div>
+      </div>
+      <button class="card-start-btn">Start →</button>
+    </div>`;
+
+        card.addEventListener("click", () => {
+          sessionStorage.setItem("ep_active_id", m.id);
+          window.location.href = "exam.html";
+        });
+
+        return card;
+      }
+
+      /* ─── Boot ─────────────────────────────────────────────── */
+      render(window._TESTS || []);
+    </script>
   </body>
 </html>

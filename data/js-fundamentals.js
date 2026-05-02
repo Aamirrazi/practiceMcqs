@@ -1,6 +1,6 @@
 /**
  * ╔══════════════════════════════════════════════════════════════════╗
- * ║          WEB DEVELOPMENT ADVANCED TEST MODULE — 3 SETS          ║
+ * ║          WEB DEVELOPMENT ADVANCED TEST MODULE — 3 SETS           ║
  * ║          CSS Mastery · JavaScript Internals · Integration        ║
  * ╚══════════════════════════════════════════════════════════════════╝
  */
@@ -9,7 +9,7 @@
 // SET 1 — CSS: Architecture, Layout & Visual Engineering
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const CSSAdvancedModule = {
+const web1 = {
   meta: {
     id: "css-advanced-v1",
     testTitle: "CSS: Architecture, Layout & Visual Engineering",
@@ -24,7 +24,6 @@ const CSSAdvancedModule = {
   },
 
   questions: [
-    // ─── Q1 ───
     {
       id: "css-adv-01",
       scenario:
@@ -41,7 +40,6 @@ const CSSAdvancedModule = {
       explanation:
         "CSS Modules hash class names at build time (e.g., `.btn-primary_3xK9`) and CSS-in-JS generates unique identifiers at runtime, providing true local scope. BEM is a convention that still relies on discipline, while specificity hacks and `!important` compound technical debt.",
     },
-    // ─── Q2 ───
     {
       id: "css-adv-02",
       scenario:
@@ -58,7 +56,6 @@ const CSSAdvancedModule = {
       explanation:
         "The `aspect-ratio` property instructs the browser to reserve the correct intrinsic space for the image before it downloads, which is the canonical CSS fix for image-related CLS. `loading='lazy'` defers loading but does not reserve space.",
     },
-    // ─── Q3 ───
     {
       id: "css-adv-03",
       scenario:
@@ -75,7 +72,6 @@ const CSSAdvancedModule = {
       explanation:
         "Flexbox is a single-axis layout model (primary axis + cross-axis for alignment). CSS Grid is a true two-dimensional layout engine where both rows and columns are explicitly defined on the container, making it ideal for card grids, dashboards, and any layout where independent rows must share alignment across columns.",
     },
-    // ─── Q4 ───
     {
       id: "css-adv-04",
       scenario:
@@ -92,7 +88,6 @@ const CSSAdvancedModule = {
       explanation:
         "CSS Custom Properties cascade and inherit, meaning redefining a token like `--color-surface` in a single scoped block cascades everywhere it is consumed. This is the industry-standard approach for design tokens and theme switching, as seen in systems like Tailwind's dark mode and Material Design 3.",
     },
-    // ─── Q5 ───
     {
       id: "css-adv-05",
       scenario:
@@ -109,7 +104,6 @@ const CSSAdvancedModule = {
       explanation:
         "`auto-fill` with `minmax(250px, 1fr)` instructs the browser to fit as many columns as possible where each is at least 250px wide. When the container shrinks below 500px, only one 250px+ column fits, naturally collapsing to a single column — all without a media query.",
     },
-    // ─── Q6 ───
     {
       id: "css-adv-06",
       scenario:
@@ -126,7 +120,6 @@ const CSSAdvancedModule = {
       explanation:
         "The browser rendering pipeline is: JavaScript → Style → Layout → Paint → Composite. Animating `transform` and `opacity` skips the Layout and Paint steps entirely, running only on the Compositor thread on the GPU. Animating width, position, or colors forces full re-layout or re-paint every frame, causing dropped frames.",
     },
-    // ─── Q7 ───
     {
       id: "css-adv-07",
       scenario:
@@ -143,7 +136,6 @@ const CSSAdvancedModule = {
       explanation:
         "`:focus-visible` is the CSS pseudo-class specifically designed for this scenario. Browsers apply it based on a heuristic: if the interaction was mouse-based, `:focus-visible` is not applied; if keyboard-based, it is. This satisfies both the designer's visual requirement and WCAG 2.4.7 (Focus Visible).",
     },
-    // ─── Q8 ───
     {
       id: "css-adv-08",
       scenario:
@@ -160,7 +152,6 @@ const CSSAdvancedModule = {
       explanation:
         "Container queries have two parts: (1) establishing a containment context on the *parent* via `container-type: inline-size`, and (2) querying that context within the *child's* CSS using `@container`. The card's styles can now react to its parent's width, not the viewport.",
     },
-    // ─── Q9 ───
     {
       id: "css-adv-09",
       scenario:
@@ -177,7 +168,6 @@ const CSSAdvancedModule = {
       explanation:
         "`flex: 1` sets `flex-grow: 1`, instructing the element to grow and consume all available space in the flex container after fixed-width siblings (the 280px sidebar) have been sized. This is the idiomatic pattern for 'fill remaining space' in Flexbox.",
     },
-    // ─── Q10 ───
     {
       id: "css-adv-10",
       scenario:
@@ -194,7 +184,6 @@ const CSSAdvancedModule = {
       explanation:
         "Pseudo-elements insert generated content *inside* an element's content model. Replaced elements (`<img>`, `<input>`, etc.) are atomic, self-contained elements whose rendering is outside CSS's control — they have no 'before' or 'after' content area. `<span>` is not a replaced element, so if it's not rendering, the likely culprit is a missing `content: ''` or `display` value.",
     },
-    // ─── Q11 ───
     {
       id: "css-adv-11",
       scenario:
@@ -211,7 +200,6 @@ const CSSAdvancedModule = {
       explanation:
         "Tailwind uses a scanner (via the `content` config key) to detect which utility classes are used in your source files. It then generates *only* those classes. A misconfigured or missing `content` array causes Tailwind to emit its entire stylesheet. A correct production build should yield a CSS bundle under 20kb for most applications.",
     },
-    // ─── Q12 ───
     {
       id: "css-adv-12",
       scenario:
@@ -228,7 +216,6 @@ const CSSAdvancedModule = {
       explanation:
         "Stacking contexts are isolated z-index scopes. If a parent has `transform: translateZ(0)` (a common GPU-acceleration hack), it creates a new stacking context. No child inside it, regardless of its z-index, can escape that context. The standard fix is `isolation: isolate` on the portal container and rendering modals at the `<body>` root level.",
     },
-    // ─── Q13 ───
     {
       id: "css-adv-13",
       scenario:
@@ -245,7 +232,6 @@ const CSSAdvancedModule = {
       explanation:
         "This is a critical accessibility principle. Many users with low vision increase their browser's default font size (e.g., from 16px to 20px). If your CSS uses `px`, those texts will not scale with the user's preference. `rem` units respect the root font size, inherently supporting user-defined scaling.",
     },
-    // ─── Q14 ───
     {
       id: "css-adv-14",
       scenario:
@@ -262,7 +248,6 @@ const CSSAdvancedModule = {
       explanation:
         "`:placeholder-shown` is true when the placeholder is visible — i.e., the field is empty and untouched. Combining `:invalid:not(:placeholder-shown)` means: 'the field is invalid AND the user has started typing' (placeholder hidden). This pure-CSS pattern delivers UX-friendly validation without JavaScript.",
     },
-    // ─── Q15 ───
     {
       id: "css-adv-15",
       scenario:
@@ -279,7 +264,6 @@ const CSSAdvancedModule = {
       explanation:
         "The CSS Multi-column Layout module (`column-count`, `column-width`, `column-gap`, `column-rule`) is purpose-built for newspaper-style text columns. Content flows naturally from the bottom of one column to the top of the next — no JavaScript splitting required.",
     },
-    // ─── Q16 ───
     {
       id: "css-adv-16",
       scenario:
@@ -295,7 +279,6 @@ const CSSAdvancedModule = {
       explanation:
         "Render-blocking CSS is a major FCP bottleneck. The `media` attribute signals to the browser whether a stylesheet is critical for the current rendering context. `media='print'` is known to be irrelevant for screen rendering, so the browser downloads it with low priority without blocking paint. The `onload` switch to `all` then applies the styles seamlessly.",
     },
-    // ─── Q17 ───
     {
       id: "css-adv-17",
       scenario:
@@ -312,7 +295,6 @@ const CSSAdvancedModule = {
       explanation:
         "Unlike preprocessor variables (which are compiled away), CSS Custom Properties are live runtime values that cascade and inherit down the DOM tree. This is a feature, not a bug — it enables the scoped theming pattern where a component can override a token for all its descendants without affecting the rest of the page.",
     },
-    // ─── Q18 ───
     {
       id: "css-adv-18",
       scenario:
@@ -329,7 +311,6 @@ const CSSAdvancedModule = {
       explanation:
         "CSS Scroll-Driven Animations (using `animation-timeline: scroll()` or `view()`) run entirely off the main thread in the browser's compositor. This eliminates the JS event → style recalculation loop that causes scroll jank, delivering perfectly smooth animations tied to scroll position.",
     },
-    // ─── Q19 ───
     {
       id: "css-adv-19",
       scenario:
@@ -346,7 +327,6 @@ const CSSAdvancedModule = {
       explanation:
         "`@layer` introduces the concept of *cascade layers* to CSS. You declare layers in order: `@layer third-party, overrides;`. Any styles in the `overrides` layer win over `third-party`, regardless of specificity. This is the architectural solution to specificity wars.",
     },
-    // ─── Q20 ───
     {
       id: "css-adv-20",
       scenario:
@@ -370,7 +350,7 @@ const CSSAdvancedModule = {
 // SET 2 — JavaScript: Runtime Internals, Async & Engineering Patterns
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const JavaScriptAdvancedModule = {
+const web2 = {
   meta: {
     id: "js-advanced-v1",
     testTitle: "JavaScript: Runtime Internals, Async & Engineering Patterns",
@@ -385,7 +365,6 @@ const JavaScriptAdvancedModule = {
   },
 
   questions: [
-    // ─── Q1 ───
     {
       id: "js-adv-01",
       scenario:
@@ -402,7 +381,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "This is a compound memory leak pattern: (1) Uncleared intervals that accumulate if the previous async operation is still pending, (2) Closures inside interval callbacks capturing references to DOM nodes, keeping them alive even after removal. The fix involves using `clearInterval` in a cleanup effect, implementing abort controllers to cancel in-flight fetches, and nullifying DOM references.",
     },
-    // ─── Q2 ───
     {
       id: "js-adv-02",
       scenario:
@@ -419,7 +397,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "This is the canonical JavaScript closure-in-loop gotcha. `var` hoists to the function scope, so one binding of `i` is shared across all closures. `let` creates a new lexical binding per block iteration, each closure capturing its own snapshot of `i`. This is one of the primary reasons `let` was introduced in ES6.",
     },
-    // ─── Q3 ───
     {
       id: "js-adv-03",
       scenario:
@@ -436,7 +413,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "`Promise.all()` implements the 'all-or-nothing' contract: concurrent execution, a single resolved value array if all succeed, and fast-fail rejection the moment any Promise rejects. `allSettled` would require manual inspection of each result's `.status`, adding latency; `race` is for first-to-respond scenarios.",
     },
-    // ─── Q4 ───
     {
       id: "js-adv-04",
       scenario:
@@ -453,7 +429,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "Debounce 'waits for the storm to pass' — the function fires only after `n` milliseconds of silence, making it ideal for search inputs. Throttle 'fires at most once per interval' regardless of event volume — useful for scroll events or resize handlers. Applying a 300ms debounce to a search input reduces API calls to roughly one per search query instead of one per keystroke.",
     },
-    // ─── Q5 ───
     {
       id: "js-adv-05",
       scenario:
@@ -470,7 +445,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "Memoization is the performance pattern for expensive pure functions. A cache (typically a `Map`) stores `(arguments → result)` pairs. On subsequent calls with the same arguments, the cached result is returned immediately. The purity constraint is critical: a memoized function that reads from a database or has side effects would return stale, incorrect cached values.",
     },
-    // ─── Q6 ───
     {
       id: "js-adv-06",
       scenario:
@@ -487,7 +461,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "Hoisting is a fundamental V8 compilation step. `var` is forgiving — it hoists and initializes to `undefined`. `let` and `const` are stricter — they hoist but are uninitialized in the TDZ, making their behavior more predictable and bugs easier to catch. This is why `let`/`const` are preferred in modern code.",
     },
-    // ─── Q7 ───
     {
       id: "js-adv-07",
       scenario:
@@ -504,7 +477,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "Modifying `Object.prototype` is a globally destructive operation — every object in the JavaScript runtime inherits from it. The `for...in` pollution issue has historically broken many production applications and jQuery plugins. It is universally considered one of the most dangerous JavaScript anti-patterns.",
     },
-    // ─── Q8 ───
     {
       id: "js-adv-08",
       scenario:
@@ -521,7 +493,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "Promisification is the process of wrapping callback-based APIs in a `new Promise()` to modernize them. Node.js provides `util.promisify()` for this. This is the exact pattern used to bridge legacy callback APIs (like the old `Notification.requestPermission`) into a consistent async/await flow.",
     },
-    // ─── Q9 ───
     {
       id: "js-adv-09",
       scenario:
@@ -538,7 +509,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "`JSON.stringify` was designed for data serialization (network transfer), not object cloning. `structuredClone()` was added to both browsers and Node.js specifically to solve this, handling the full range of cloneable types including transferable objects. It also correctly throws on non-cloneable types (like functions) rather than silently dropping them.",
     },
-    // ─── Q10 ───
     {
       id: "js-adv-10",
       scenario:
@@ -555,7 +525,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "JavaScript is single-threaded on the main thread. `async/await` and `setTimeout` are still bound to the main event loop; they yield between tasks but don't parallelize CPU work. Web Workers are true OS-level threads with separate memory, designed for exactly this use case. Results are marshalled back to the main thread via the structured clone algorithm.",
     },
-    // ─── Q11 ───
     {
       id: "js-adv-11",
       scenario:
@@ -572,7 +541,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "Strong references (normal variable assignments) form reachability roots that prevent GC. When you reassign a module variable, the old object is dereferenced *from that variable*, but if any other strong reference exists (e.g., in a closure, event listener, or Map key), it survives. `WeakRef` and `WeakMap` are designed for this: they allow the GC to collect the object when no strong references remain.",
     },
-    // ─── Q12 ───
     {
       id: "js-adv-12",
       scenario:
@@ -589,7 +557,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "This is a direct consequence of JavaScript's reference equality semantics for objects. `{ a: 1 } === { a: 1 }` is `false` because they are different objects in memory. React's context and `memo` checks use `Object.is` (strict equality), so a newly constructed object always triggers consumers, even with identical data. This is one of the most common React performance pitfalls.",
     },
-    // ─── Q13 ───
     {
       id: "js-adv-13",
       scenario:
@@ -606,7 +573,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "Function identity is the foundation of event listener management. The `AbortController` pattern (introduced for fetch cancellation, now extended to DOM events) is particularly elegant for plugin systems: one `controller.abort()` call removes all listeners registered with that signal, without needing to track individual function references.",
     },
-    // ─── Q14 ───
     {
       id: "js-adv-14",
       scenario:
@@ -623,7 +589,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "`eval()` is the browser equivalent of SQL injection — it converts data into executable code. Even indirect eval patterns like `new Function(str)`, `setTimeout('string', 0)`, or `setInterval('string', 0)` carry the same risk. The Content Security Policy (CSP) header with `script-src: 'unsafe-eval'` blocked is an infrastructure-level defense, but the correct fix is eliminating `eval()` from the codebase.",
     },
-    // ─── Q15 ───
     {
       id: "js-adv-15",
       scenario:
@@ -640,7 +605,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "This is a critical distinction. `const obj = {}; obj.key = 'value'` works perfectly — `const` protects the binding (you can't `obj = {}`), not the contents. `Object.freeze()` is the correct tool for immutable objects, but it is *shallow* — nested objects must be frozen recursively (deep freeze) for complete immutability.",
     },
-    // ─── Q16 ───
     {
       id: "js-adv-16",
       scenario:
@@ -657,7 +621,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "`for...of`, spread (`...`), and destructuring all operate on the Iterable protocol, not array-specific APIs. Any object with `[Symbol.iterator]()` returning a valid iterator is iterable. This is how native `Map`, `Set`, `String`, and `NodeList` achieve `for...of` support. Generator functions (`function*`) provide syntactic sugar for implementing iterators.",
     },
-    // ─── Q17 ───
     {
       id: "js-adv-17",
       scenario:
@@ -674,7 +637,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "The 'fire and forget' async call pattern is the most common production source of unhandled rejections. Wrapping every `async` call with `try/catch` and attaching `.catch()` to every non-awaited Promise chain is essential. Global `window.addEventListener('unhandledrejection', ...)` and error monitoring tools (Sentry, Datadog) are used to surface these in production.",
     },
-    // ─── Q18 ───
     {
       id: "js-adv-18",
       scenario:
@@ -691,7 +653,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "Both answers B and C are historically accurate. Vue 2 used `Object.defineProperty` (which is why adding new properties to reactive objects required `Vue.set()`). Vue 3 and MobX migrated to `Proxy`, which intercepts all property access dynamically, including newly added properties and array index mutations.",
     },
-    // ─── Q19 ───
     {
       id: "js-adv-19",
       scenario:
@@ -708,7 +669,6 @@ const JavaScriptAdvancedModule = {
       explanation:
         "`Object.assign` is a shallow, enumerable-own-property copier. For mixin-based systems, `Object.getOwnPropertyDescriptors()` combined with `Object.defineProperties()` preserves getters and setters correctly. For prototype chain integration, class mixins using `extends` with factory functions are the modern idiomatic approach.",
     },
-    // ─── Q20 ───
     {
       id: "js-adv-20",
       scenario:
@@ -732,7 +692,7 @@ const JavaScriptAdvancedModule = {
 // SET 3 — Integration: Browser APIs, Security, Performance & Architecture
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const WebDevIntegrationModule = {
+const web3 = {
   meta: {
     id: "webdev-integration-v1",
     testTitle: "Web Dev Integration: Browser APIs, Security & Architecture",
@@ -747,7 +707,6 @@ const WebDevIntegrationModule = {
   },
 
   questions: [
-    // ─── Q1 ───
     {
       id: "int-adv-01",
       scenario:
@@ -764,7 +723,6 @@ const WebDevIntegrationModule = {
       explanation:
         "The Same-Origin Policy is the browser's most fundamental security boundary. `postMessage` was specifically introduced to enable structured, safe cross-origin communication. Always validate `event.origin` in the listener — failure to do so opens a cross-window scripting vulnerability where any origin can inject commands.",
     },
-    // ─── Q2 ───
     {
       id: "int-adv-02",
       scenario:
@@ -781,7 +739,6 @@ const WebDevIntegrationModule = {
       explanation:
         "The `HttpOnly` cookie flag is the primary defense against token theft via XSS, as it creates a browser-enforced wall around the token. The `Secure` flag (HTTPS-only transmission) and `SameSite=Strict` or `Lax` (CSRF prevention) complete the secure cookie triad. `sessionStorage` is equally accessible to JavaScript and provides no security benefit over `localStorage`.",
     },
-    // ─── Q3 ───
     {
       id: "int-adv-03",
       scenario:
@@ -798,7 +755,6 @@ const WebDevIntegrationModule = {
       explanation:
         "AppCache is deprecated and removed from browsers. The Service Worker is the modern, scriptable network proxy that makes PWAs possible. Unlike the HTTP cache (which is browser-managed and evictable), the Service Worker's Cache Storage is developer-controlled and persists for offline use. The `stale-while-revalidate` strategy is the industry standard for balancing freshness with instant load performance.",
     },
-    // ─── Q4 ───
     {
       id: "int-adv-04",
       scenario:
@@ -815,7 +771,6 @@ const WebDevIntegrationModule = {
       explanation:
         "CSP is the primary defense-in-depth XSS mitigation. `script-src 'self'` blocks inline script injection and scripts from untrusted origins. `connect-src` can additionally restrict which origins `fetch()` and XHR can communicate with, blocking exfiltration even if a script somehow executes. `X-XSS-Protection` is deprecated in modern browsers and was never a reliable defense.",
     },
-    // ─── Q5 ───
     {
       id: "int-adv-05",
       scenario:
@@ -832,7 +787,6 @@ const WebDevIntegrationModule = {
       explanation:
         "Layout thrashing is one of the most impactful, diagnosable performance issues in JavaScript animations. The pattern 'read a geometry property → write a style → read again → write again' in a tight loop is the culprit. The `fastdom` library formalizes the batch-reads/batch-writes pattern. Libraries like GSAP handle this internally.",
     },
-    // ─── Q6 ───
     {
       id: "int-adv-06",
       scenario:
@@ -849,7 +803,6 @@ const WebDevIntegrationModule = {
       explanation:
         "Parse and execution time scales with bundle size. Code splitting (or 'lazy loading routes') reduces the amount of JS that must be parsed, compiled, and executed before the page is interactive. A well-code-split React app typically delivers the initial route in under 200KB of JS. Route-based splitting is the minimum viable strategy; component-level splitting of heavy libraries (rich text editors, chart libraries) is the advanced extension.",
     },
-    // ─── Q7 ───
     {
       id: "int-adv-07",
       scenario:
@@ -866,7 +819,6 @@ const WebDevIntegrationModule = {
       explanation:
         "The History API is the foundational mechanism for all modern SPA routers (React Router, Vue Router, Next.js). `pushState` for new navigations, `replaceState` for redirects, and listening to `popstate` for back/forward form the complete browser navigation integration contract. The Navigation API is the next-generation replacement, but the History API remains the current universal standard.",
     },
-    // ─── Q8 ───
     {
       id: "int-adv-08",
       scenario:
@@ -883,7 +835,6 @@ const WebDevIntegrationModule = {
       explanation:
         "The transpiler vs. polyfill distinction is critical: a transpiler transforms *syntax* at build time (static transformation), while a polyfill patches missing *runtime APIs* at execution time (dynamic injection). Both are needed for full legacy compatibility. `@babel/preset-env` with a `browserslist` target automates the optimal combination, only including what's actually needed for the target browser set.",
     },
-    // ─── Q9 ───
     {
       id: "int-adv-09",
       scenario:
@@ -900,7 +851,6 @@ const WebDevIntegrationModule = {
       explanation:
         "Clickjacking is the act of embedding a site in a transparent iframe and overlaying deceptive elements. `X-Frame-Options` was the original defense; `CSP frame-ancestors` is the modern, more flexible replacement (it supports more than two options and works correctly with legacy `X-Frame-Options` as a fallback). Both should be set for defense in depth.",
     },
-    // ─── Q10 ───
     {
       id: "int-adv-10",
       scenario:
@@ -917,7 +867,6 @@ const WebDevIntegrationModule = {
       explanation:
         "`IntersectionObserver` was built specifically to replace inefficient scroll + `getBoundingClientRect` patterns. It is natively implemented in the browser compositor, not tied to the scroll event loop. It is the foundational API for lazy image loading, infinite scroll, analytics impression tracking, and sticky header logic.",
     },
-    // ─── Q11 ───
     {
       id: "int-adv-11",
       scenario:
@@ -934,7 +883,6 @@ const WebDevIntegrationModule = {
       explanation:
         "WebSockets (full-duplex) vs. SSE (server-to-client unidirectional) is a fundamental architectural choice. SSE is ideal for dashboards, notification feeds, and live score updates. WebSockets are required for collaborative editing, chat, multiplayer games, and any scenario where the client also sends frequent messages. SSE uses standard HTTP; WebSockets require a server that supports the WS upgrade protocol.",
     },
-    // ─── Q12 ───
     {
       id: "int-adv-12",
       scenario:
@@ -951,7 +899,6 @@ const WebDevIntegrationModule = {
       explanation:
         "`defer` is the standard recommendation for non-critical third-party scripts. It removes render-blocking while ensuring the script runs in order after HTML parsing. `async` is better for truly independent scripts (like an A/B testing tool) where execution order doesn't matter and the earliest possible execution is desired.",
     },
-    // ─── Q13 ───
     {
       id: "int-adv-13",
       scenario:
@@ -968,7 +915,6 @@ const WebDevIntegrationModule = {
       explanation:
         "The EyeDropper API is a purpose-built browser API for screen color sampling, enabling native desktop-class experiences in web tools like Figma. It handles the complex OS permissions required for screen-wide pixel access. The `getDisplayMedia` approach is technically possible but requires user consent for full screen recording — a much heavier permission than color sampling.",
     },
-    // ─── Q14 ───
     {
       id: "int-adv-14",
       scenario:
@@ -985,7 +931,6 @@ const WebDevIntegrationModule = {
       explanation:
         "Both techniques address the same problem from different layers. `content-visibility: auto` is a newer CSS primitive that instructs the browser's rendering engine to skip layout and paint for off-screen sections — it's a near-zero-effort win. Virtual scrolling provides more control, supports accurate scroll height estimation, and handles cases where item heights are variable. In practice, both can be combined for maximum performance.",
     },
-    // ─── Q15 ───
     {
       id: "int-adv-15",
       scenario:
@@ -1002,7 +947,6 @@ const WebDevIntegrationModule = {
       explanation:
         "DOM-based XSS via `innerHTML` is one of the most prevalent client-side vulnerabilities. `textContent` is the safest default for user-supplied text. DOMPurify is the battle-tested industry standard when HTML rendering is genuinely required (rich text, markdown rendering). Trusted Types (a newer browser API) enforces that only sanitized values can be assigned to dangerous sinks like `innerHTML`.",
     },
-    // ─── Q16 ───
     {
       id: "int-adv-16",
       scenario:
@@ -1019,7 +963,6 @@ const WebDevIntegrationModule = {
       explanation:
         "All four options have merit, but `OffscreenCanvas` most directly solves the stated problem (UI locked by main-thread processing). It transfers canvas rendering to a Worker, freeing the main thread. WebGL/WebGPU provide GPU acceleration but are far more complex to implement for image filters. `CSS filter` is GPU-accelerated but cannot process and export modified pixel data programmatically. The ideal production solution combines OffscreenCanvas + WebGL shaders.",
     },
-    // ─── Q17 ───
     {
       id: "int-adv-17",
       scenario:
@@ -1036,7 +979,6 @@ const WebDevIntegrationModule = {
       explanation:
         "The double-invoke behavior is intentional and valuable — it exposes effects that assume they will only run once (a common bug). The `AbortController` pattern makes `fetch` cleanup explicit: `const controller = new AbortController(); fetch(url, { signal: controller.signal }); return () => controller.abort();`. This is the canonical React 18 data-fetching pattern and handles both Strict Mode double-mounting and navigation-during-fetch scenarios.",
     },
-    // ─── Q18 ───
     {
       id: "int-adv-18",
       scenario:
@@ -1053,7 +995,6 @@ const WebDevIntegrationModule = {
       explanation:
         "Tree-shaking requires two prerequisites: (1) **ES Modules format** (static `import`/`export`, not CommonJS `require`), because ESM's static analysis allows bundlers to determine at build time what is and isn't used. (2) **`\"sideEffects\": false`** to declare that unused modules can be safely removed without breaking the app. Without this flag, a bundler must assume any import might have side effects and includes it anyway.",
     },
-    // ─── Q19 ───
     {
       id: "int-adv-19",
       scenario:
@@ -1070,7 +1011,6 @@ const WebDevIntegrationModule = {
       explanation:
         "Module Federation is the architectural cornerstone of modern micro-frontend systems. It goes beyond `import()` (same-build chunks) by resolving modules from separately deployed, version-independent builds. The `shared` configuration prevents duplicate dependencies (e.g., both apps loading their own copy of React). Alternatives include import maps (native browser spec) and single-spa framework.",
     },
-    // ─── Q20 ───
     {
       id: "int-adv-20",
       scenario:
@@ -1089,10 +1029,8 @@ const WebDevIntegrationModule = {
     },
   ],
 };
-
-// ─── EXPORT ALL THREE MODULES ─────────────────────────────────────────────────
 module.exports = {
-  CSSAdvancedModule,
-  JavaScriptAdvancedModule,
-  WebDevIntegrationModule,
+  web1,
+  web2,
+  web3,
 };
